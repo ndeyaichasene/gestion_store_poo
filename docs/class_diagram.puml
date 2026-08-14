@@ -96,13 +96,12 @@ class LigneApprovisionnement {
     sousTotal
 }
 
-Utilisateur "1" -- "1" Role
+Utilisateur "0..*" -- "1" Role
 
 Client "1" -- "0..*" Vente
 Utilisateur "1" -- "0..*" Vente
 Vente "1" *-- "1..*" LigneVente
 LigneVente "*" -- "1" Produit
-Produit "*" -- "1" Categorie
 
 Vente "1" -- "0..1" Dette
 Client "1" -- "0..*" Dette
