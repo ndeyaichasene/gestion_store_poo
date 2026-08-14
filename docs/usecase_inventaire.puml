@@ -1,0 +1,40 @@
+@startuml storeManager_Inventaire
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Inventaire" as I
+
+rectangle "StoreManager Pro - Application Inventaire" {
+
+    ' Authentification
+    usecase "Se connecter" as UC_Login
+
+    ' Vue unique autorisée : Écran Catalogue (Mode consultation & gestion des répertoires)
+    usecase "Accéder à l'écran Catalogue (Tiers & Produits)" as GCAT
+    
+    usecase "Consulter et filtrer les produits en stock" as LP
+    usecase "Ajouter un produit au catalogue" as AP
+    
+    usecase "Consulter le répertoire des clients" as LC
+    usecase "Ajouter un client" as AC
+    
+    usecase "Consulter le répertoire des fournisseurs" as LF
+    usecase "Ajouter un fournisseur" as AF
+}
+
+' Interactions Acteur -> Écran autorisé
+I --> UC_Login
+I --> GCAT
+
+' Écran Catalogue -> Actions
+GCAT --> LP : <<include>>
+GCAT --> AP : <<extend>>
+GCAT --> LC : <<include>>
+GCAT --> AC : <<extend>>
+GCAT --> LF : <<include>>
+GCAT --> AF : <<extend>>
+
+' Accès sécurisé
+GCAT ..> UC_Login : <<include>>
+
+@enduml

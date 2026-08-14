@@ -1,0 +1,50 @@
+@startuml storeManager_Stock
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Chargé de Stock" as S
+
+rectangle "StoreManager Pro - Application Stock" {
+
+    ' Authentification
+    usecase "Se connecter" as UC_Login
+
+    ' Vue 1 : Écran Approvisionnements
+    usecase "Accéder à l'écran Approvisionnements" as GAPP
+    usecase "Créer un Bon de Livraison (BL)" as NBL
+    usecase "Sélectionner un fournisseur" as SF
+    usecase "Ajouter des articles au BL" as ABL
+    usecase "Valider et enregistrer la réception du BL" as EVBL
+    usecase "Consulter l'historique des réceptions" as LBL
+
+    ' Vue 2 : Écran Catalogue & Stock
+    usecase "Accéder à l'écran Catalogue (Produits & Fournisseurs)" as GCAT
+    usecase "Consulter les produits et alertes stock bas" as LP
+    usecase "Ajouter un nouveau produit" as AP
+    usecase "Ajouter un fournisseur" as AF
+    usecase "Consulter la liste des fournisseurs" as LF
+}
+
+' Interactions Acteur -> Écrans autorisés
+S --> UC_Login
+S --> GAPP
+S --> GCAT
+
+' Écran Approvisionnements -> Actions
+GAPP --> NBL : <<include>>
+GAPP --> LBL : <<include>>
+NBL --> SF : <<include>>
+NBL --> ABL : <<include>>
+NBL --> EVBL : <<include>>
+
+' Écran Catalogue -> Actions
+GCAT --> LP : <<include>>
+GCAT --> AP : <<extend>>
+GCAT --> AF : <<extend>>
+GCAT --> LF : <<include>>
+
+' Accès sécurisé
+GAPP ..> UC_Login : <<include>>
+GCAT ..> UC_Login : <<include>>
+
+@enduml

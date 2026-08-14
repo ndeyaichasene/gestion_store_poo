@@ -1,0 +1,60 @@
+@startuml storeManager_Admin
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Admin Boutique" as A
+
+rectangle "StoreManager Pro - Application Admin" {
+
+    ' Authentification
+    usecase "Se connecter" as UC_Login
+
+    ' Vue 1 : Tableau de Bord & Statistiques
+    usecase "Accéder au Tableau de Bord (KPIs & Alertes)" as DASH
+    usecase "Consulter les indicateurs clés (CA, créances, stock critique)" as KPIs
+    usecase "Superviser les dernières ventes" as SV
+    usecase "Superviser les dettes critiques" as SD
+
+    ' Vue 2 : Caisse POS
+    usecase "Accéder à l'écran Caisse (POS)" as POS
+    usecase "Effectuer et valider des ventes" as EV
+
+    ' Vue 3 : Dettes
+    usecase "Accéder à l'écran Dettes Clients" as GD
+    usecase "Enregistrer un règlement de dette" as EPD
+
+    ' Vue 4 : Approvisionnements
+    usecase "Accéder à l'écran Approvisionnements" as GAPP
+    usecase "Enregistrer un Bon de Livraison (BL)" as EVBL
+
+    ' Vue 5 : Catalogue & Tiers
+    usecase "Accéder à l'écran Catalogue (Produits & Tiers)" as GCAT
+    usecase "Gérer les produits, clients et fournisseurs" as GCAT_ALL
+}
+
+' Interactions Acteur -> Écrans autorisés (Contrôle total)
+A --> UC_Login
+A --> DASH
+A --> POS
+A --> GD
+A --> GAPP
+A --> GCAT
+
+' Écrans -> Actions
+DASH --> KPIs : <<include>>
+DASH --> SV : <<include>>
+DASH --> SD : <<include>>
+
+POS --> EV : <<include>>
+GD --> EPD : <<include>>
+GAPP --> EVBL : <<include>>
+GCAT --> GCAT_ALL : <<include>>
+
+' Accès sécurisé
+DASH ..> UC_Login : <<include>>
+POS ..> UC_Login : <<include>>
+GD ..> UC_Login : <<include>>
+GAPP ..> UC_Login : <<include>>
+GCAT ..> UC_Login : <<include>>
+
+@enduml
