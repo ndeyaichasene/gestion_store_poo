@@ -2,24 +2,24 @@
 left to right direction
 skinparam packageStyle rectangle
 
-actor "👑 Admin Boutique" as Admin
-actor "🛒 Chargé de Vente" as Vendeur
-actor "📦 Chargé de Stock" as Stock
-actor "📋 Inventaire" as Inventaire
+actor " Admin Boutique" as Admin
+actor " Chargé de Vente" as Vendeur
+actor " Chargé de Stock" as Stock
+actor " Inventaire" as Inventaire
 
 rectangle "StoreManager Pro - ERP Application" {
 
-    ' Authentification commune
+    
     usecase "Se connecter" as Login
 
-    ' 5 Vues Principales de l'Application
+    
     usecase "Tableau de bord (Dashboard)" as DASH
     usecase "Caisse tactile (POS)" as POS
     usecase "Suivi des Dettes Clients" as DETTES
     usecase "Approvisionnements (BLs)" as SUPPLIES
     usecase "Catalogue & Tiers (Produits, Clients, Fournisseurs)" as CATALOG
 
-    ' Actions Métier Majeures
+   
     usecase "Consulter les KPIs & alertes" as KPIs
     usecase "Effectuer une vente" as Vente
     usecase "Enregistrer un paiement dette" as PaiementDette
@@ -27,7 +27,6 @@ rectangle "StoreManager Pro - ERP Application" {
     usecase "Gérer produits, clients et fournisseurs" as GestionCatalogue
 }
 
-' Permissions par Profil (conformes aux vues de l'ERP)
 Admin --> DASH
 Admin --> POS
 Admin --> DETTES
@@ -42,14 +41,14 @@ Stock --> CATALOG
 
 Inventaire --> CATALOG
 
-' Relations Vues -> Actions Métier
+
 DASH --> KPIs : <<include>>
 POS --> Vente : <<include>>
 DETTES --> PaiementDette : <<include>>
 SUPPLIES --> ReceptionBL : <<include>>
 CATALOG --> GestionCatalogue : <<include>>
 
-' Accès sécurisé
+
 DASH ..> Login : <<include>>
 POS ..> Login : <<include>>
 DETTES ..> Login : <<include>>
