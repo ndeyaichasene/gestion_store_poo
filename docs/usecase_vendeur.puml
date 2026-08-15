@@ -4,34 +4,29 @@ skinparam packageStyle rectangle
 
 actor "Chargé de Vente" as V
 
-rectangle "StoreManager Pro - Application Vendeur" {
+rectangle "StoreManager Pro -  Vendeur" {
 
-    ' Authentification
-    usecase "Se connecter" as UC_Login
+    usecase "Se connecter" as U
 
-    ' Vue 1 : Écran Caisse Tactile / POS
-    usecase "Accéder à l'écran Caisse (POS)" as POS
+    usecase "voir dashboard vendeur (POS)" as POS
     usecase "Rechercher un produit / code-barres" as RP
-    usecase "Ajouter un produit au panier" as AP
-    usecase "Modifier la quantité du panier" as MQ
+    usecase "Ajouter un produit au ligne" as AP
+    usecase "Modifier la quantité du ligne" as MQ
     usecase "Sélectionner un client" as SC
     usecase "Vérifier la limite de crédit client" as VLC
     usecase "Choisir le mode de règlement (Espèces, Wave, OM, Dette)" as MR
     usecase "Valider la vente" as EV
-    usecase "Annuler le panier" as ANN
+    usecase "Annuler la ligne" as ANN
 
-    ' Vue 2 : Écran Suivi des Dettes
     usecase "Accéder à l'écran Dettes Clients" as GD
     usecase "Consulter la liste des dettes clients" as LD
     usecase "Enregistrer un règlement de dette" as EPD
 }
 
-' Interactions Acteur -> Écrans autorisés
-V --> UC_Login
+
 V --> POS
 V --> GD
 
-' Écran POS -> Actions
 POS --> RP : <<include>>
 POS --> AP : <<include>>
 POS --> MQ : <<extend>>
@@ -41,12 +36,17 @@ POS --> MR : <<include>>
 POS --> EV : <<include>>
 POS --> ANN : <<extend>>
 
-' Écran Dettes -> Actions
-GD --> LD : <<include>>
-GD --> EPD : <<include>>
+U <.. RP : <<include>>
+U <.. AP : <<include>>
+U <.. MQ : <<include>>
+U <.. SC : <<include>>
+U <.. VLC : <<include>>
+U <.. MR : <<include>>
+U <.. EV : <<include>>
+U <.. ANN : <<extend>>
 
-' Accès sécurisé
-POS ..> UC_Login : <<include>>
-GD ..> UC_Login : <<include>>
+GD --> LD : <<include>>
+GD ..> EPD : <<extend>>
+
 
 @enduml
