@@ -4,37 +4,57 @@ skinparam packageStyle rectangle
 
 actor "Inventaire" as I
 
-rectangle "StoreManager Pro - Application Inventaire" {
+rectangle "StoreManager Pro -  Inventaire" {
 
-    ' Authentification
-    usecase "Se connecter" as UC_Login
+    usecase "Se connecter" as U
 
-    ' Vue unique autorisée : Écran Catalogue (Mode consultation & gestion des répertoires)
-    usecase "Accéder à l'écran Catalogue (Tiers & Produits)" as GCAT
+  
+    usecase "voir statistique(Tiers & Produits)" as VS
+
+    usecase "gerer les produits" as GP
+    usecase "saisir un produit au catalogue" as AP
+    usecase "lister et filtrer les produits en stock" as LP
+    usecase "enregistrer produit" as EP
+
+    usecase "gerer les fournisseurs" as GF
+     usecase "Consulter le répertoire des fournisseurs" as LF
+    usecase "saisir un fournisseur" as AF
+    usecase "enregistrer fournisseur" as EF
+
+
+    usecase "gerer les clients" as GC
+    usecase "lister le répertoire des clients" as LC
+    usecase "saisir un client" as AC
+    usecase "enregistrer client" as EC
+
     
-    usecase "Consulter et filtrer les produits en stock" as LP
-    usecase "Ajouter un produit au catalogue" as AP
-    
-    usecase "Consulter le répertoire des clients" as LC
-    usecase "Ajouter un client" as AC
-    
-    usecase "Consulter le répertoire des fournisseurs" as LF
-    usecase "Ajouter un fournisseur" as AF
+   
 }
 
-' Interactions Acteur -> Écran autorisé
-I --> UC_Login
-I --> GCAT
+I --> VS
+VS ..> : <<include>>
+I --> GF
+I --> GP
+I --> GC
 
-' Écran Catalogue -> Actions
-GCAT --> LP : <<include>>
-GCAT --> AP : <<extend>>
-GCAT --> LC : <<include>>
-GCAT --> AC : <<extend>>
-GCAT --> LF : <<include>>
-GCAT --> AF : <<extend>>
+GF ..> LF : <<include>>
+GF ..> AF : <<include>>
+AF <.. EF : <<extend>>
 
-' Accès sécurisé
-GCAT ..> UC_Login : <<include>>
+GP ..> LP: <<include>>
+GP ..> AP: <<include>>
+AP <.. EP: <<extend>>
+
+GC ..> LC: <<include>>
+GC ..> AC: <<include>>
+AC <.. EC: <<extend>>
+
+ EF ..> U: <<include>>
+ EC ..> U: <<include>>
+ EP ..> U: <<include>>
+
+
+
+
 
 @enduml
