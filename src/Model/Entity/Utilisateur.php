@@ -1,0 +1,155 @@
+<?php
+
+require_once __DIR__ . "/Role.php";
+
+class Utilisateur
+{
+    // Attributs
+    private int $id;
+    private string $nom;
+    private string $prenom;
+    private string $email;
+    private string $password;
+    private string $adresse;
+    private string $telephone;
+    private ?Role $role;
+
+    // Constructeur
+    public function __construct(
+        string $nom = "",
+        string $prenom = "",
+        string $email = "",
+        string $password = "",
+        ?Role $role = null,
+        string $adresse = "",
+        string $telephone = "",
+        int $id = 0
+    ) {
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+        $this->adresse = $adresse;
+        $this->telephone = $telephone;
+    }
+
+    // Getters
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function getPrenom(): string
+    {
+        return $this->prenom;
+    }
+
+    public function getNomComplet(): string
+    {
+        return trim($this->prenom . " " . $this->nom);
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getAdresse(): string
+    {
+        return $this->adresse;
+    }
+
+    public function getTelephone(): string
+    {
+        return $this->telephone;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    // Setters
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    public function setPrenom(string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setAdresse(string $adresse): void
+    {
+        $this->adresse = $adresse;
+    }
+
+    public function setTelephone(string $telephone): void
+    {
+        $this->telephone = $telephone;
+    }
+
+    public function setRole(?Role $role): void
+    {
+        $this->role = $role;
+    }
+
+    // Méthodes métiers
+    public function isPassword(string $passwordValide): bool
+    {
+        return password_verify($passwordValide, $this->password);
+    }
+
+    public function hasRole(string $nomRole): bool
+    {
+        return $this->role !== null && strtoupper($this->role->getNom()) === strtoupper($nomRole);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('ADMIN');
+    }
+
+    public function isVendeur(): bool
+    {
+        return $this->hasRole('VENTE') || $this->hasRole('VENDEUR');
+    }
+
+    public function isStock(): bool
+    {
+        return $this->hasRole('STOCK');
+    }
+
+    public function isInventaire(): bool
+    {
+        return $this->hasRole('INVENTAIRE');
+    }
+}

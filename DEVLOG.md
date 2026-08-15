@@ -1,6 +1,8 @@
 #  Dossier de Conception UML - StoreManager Pro ERP
 
-*** NDEYE AISSATOU SENE P8 ***
+# 📓 Journal de Développement (DEVLOG)
+**Projet** : StoreManager Pro (ERP PHP/POO)
+**Nom & Prénom** [NDEYE AISSATOU SENE P8] 
 
 ---
 
@@ -129,4 +131,35 @@ Le modèle métier POO s'articule autour des entités suivantes :
   - Gestion des erreurs activée en mode exception.
 
 ---
+
+### Entrée 4 : Implémentation Complète des Entités Métiers POO (Encapsulation & Logique Domaine)
+- **Fichiers associés :**
+  - Répertoire des entités : `src/Model/Entity/`
+  - Classes : `Role.php`, `Utilisateur.php`, `Client.php`, `Fournisseur.php`, `Produit.php`, `ModePaiement.php`, `Vente.php`, `LigneVente.php`, `Dette.php`, `Paiement.php`, `Approvisionnement.php`, `LigneApprovisionnement.php`
+
+- **Réalisations & Architecture :**
+  1. **Encapsulation Stricte & Typage Fort (PHP 8+) :**
+     - J'ai constater que tous les attributs sont déclarés en visibilité `private` avec un typage strict (`int`, `string`, `float`, `DateTime`, `?TypeObjets`).
+     - Constructeurs paramétrés avec valeurs par défaut permettant l'instanciation directe pour lui donner un etat.
+     - Accesseurs (`getters`) et mutateurs (`setters`) complets et typés pour l'ensemble des  entités.
+
+  2. **Méthodes Métiers Intrinsèques (Pure Logique Métier sans dépendance DB) :**
+     - **`Client`** : Contrôle du plafond de crédit (`peutPrendreCredit()`, `getCreditDisponible()`), cumul et déduction de dettes (`ajouterDette()`, `diminuerDette()`), indicateurs d'état (`hasDette()`, `isLimiteAtteinte()`).
+     - **`Produit`** : Surveillance de stock (`isStockCritique()`, `isEnRupture()`, `isDisponible()`), mouvements unitaires (`diminuerStock()`, `augmenterStock()`), indicateurs financiers (`getMargeUnitaire()`, `getValeurStock()`).
+     - **`Vente`** : Calcul automatique de l'impayé (`getMontantRestant()`), vérification du solde (`isSoldee()`, `isCredit()`), détermination dynamique du statut (`determinerStatut()` : `COMPTANT`, `AVANCE`, `CREDIT_TOTAL`), ajustement par versement (`ajouterVersement()`).
+     - **`Dette`** : Vérification de clôture (`isSoldee()`, `isEnCours()`), enregistrement d'un versement et mise à jour dynamique du statut (`enregistrerPaiement()`).
+     - **`Approvisionnement` & `LigneApprovisionnement`** : Gestion du cycle de vie du bon de livraison (`isRecu()`, `isEnAttente()`, `validerReception()`, `annuler()`), suivi des réceptions partielles (`isTotalementRecue()`, `getQuantiteRestante()`, `receptionner()`), sous-total.
+     - **`LigneVente`** : Calcul automatique du sous-total (`getSousTotal() = quantite * prix_unitaire`).
+     - **`Paiement`** : Validation et annulation de règlements (`valider()`, `annuler()`, `isValide()`, `isAnnule()`).
+     - **`Utilisateur`** : Vérification du mot de passe haché (`isPassword()`), contrôles de permissions par profil (`isAdmin()`, `isVendeur()`, `isStock()`, `isInventaire()`, `hasRole()`).
+
+  3. **Séparation Stricte des Responsabilités :**
+     - Maintien d'une frontière claire : les entités encapsulent l'état et les règles métier locales (en mémoire), tandis que l'accès aux données, la persistance et les requêtes SQL sont délégués aux modèles/repositories.
+
+- **Points Clés de Validation :**
+  - Validation syntaxique `php -l` sur l'ensemble des  fichiers entités 
+  - Respect de l'intégrité du diagramme de classes UML et de la modélisation relationnelle.
+
+---
+
 
