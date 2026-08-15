@@ -199,5 +199,35 @@ Le modèle métier POO s'articule autour des entités suivantes :
 
 ---
 
+### Entrée 6 : Phase 2 (VenteService - Service Métier POS & Transaction SQL)
+- **Fichiers associés :**
+  - Répertoire : `src/Service/`
+  - Classe : `VenteService.php`
+
+- **Réalisations & Architecture :**
+  1. **Gestion Complète du Panier Caisse (POS) :**
+     - Ajout, incrémentation et modification de quantité avec vérification dynamique du stock disponible (`ajouterArticle()`, `modifierQuantite()`).
+     - Suppression d'article ciblé (`supprimerArticle()`), réinitialisation globale (`viderPanier()`) et consultation (`getPanier()`).
+     - Calculs en temps réel du montant total (`calculerTotalPanier()`) et du nombre total d'articles (`getNombreArticles()`).
+
+  2. **Contrôles Métiers & Sécurité Préalable :**
+     - Vérification de l'état non-vide du panier.
+     - Vérification d'existence du client et de sa solvabilité.
+     - Contrôle strict du plafond de crédit client en cas de vente à crédit total ou avance (`client->peutPrendreCredit($montantRestant)`).
+
+  3. **Transaction SQL Atomique (ACID via PDO) :**
+     - Encadrement complet du processus sous transaction (`beginTransaction()`, `commit()`, `rollBack()`).
+     - Génération d'une référence de vente unique (`genererReferenceVente()`).
+     - Insertion de l'en-tête de vente avec statut automatisé (`COMPTANT`, `AVANCE`, `CREDIT_TOTAL`).
+     - Insertion des lignes de vente (`lignes_vente`) et décrémentation atomique des stocks (`UPDATE produits ... WHERE qte_stock >= :quantite`).
+     - Enregistrement automatique de la créance (`dettes`) et actualisation du solde de dette du client (`clients`) en cas de reliquat impayé.
+
+- **Points Clés de Validation :**
+  - Validation syntaxique  sur `src/Service/VenteService.php` .
+  - Gestion robuste des exceptions (`Throwable`) avec rollback systématique pour garantir l'intégrité de la base de données.
+
+---
+
+
 
 
