@@ -100,3 +100,33 @@ Le modèle métier POO s'articule autour des entités suivantes :
   - Adaptation dialectale SQLite (`AUTOINCREMENT`, types `NUMERIC`/`TEXT`) et PostgreSQL (`SERIAL`, types `DECIMAL`, `TIMESTAMP`).
 
 
+---
+
+### Entrée 3 : Couche d'Accès aux Données & Singleton PDO (Database.php)
+- **Fichiers associés :**
+  - Classe de connexion et d'abstraction DB : src/core/Database.php
+
+- **Réalisations & Architecture :**
+  1. **Pattern Singleton PDO :**
+     - Implémentation d'une instance unique `PDO` partagée via `connexionDB()` / `getInstanceDB()` pour optimiser les ressources et éviter les connexions redondantes.
+     - Configuration des attributs PDO par défaut : mode d'erreur en exceptions (`PDO::ERRMODE_EXCEPTION`) et mode de récupération associatif (`PDO::FETCH_ASSOC`).
+
+  2. **Stratégie Multi-Driver (PostgreSQL & SQLite Fallback) :**
+     - Tentative de connexion prioritaire sur PostgreSQL (`pgsql:host=localhost;port=5432;dbname=storemanager`).
+     - Basculement automatique en cas d'erreur vers SQLite (`sqlite:erp.db`).
+     - Suivi du driver actif via l'attribut statique `$driver` et accesseur `getDriver()`.
+
+  3. **Méthodes Utilitaires CRUD Génériques :**
+     - `prepare(PDO $pdo, string $sql, array $datas)` : Préparation et exécution sécurisée des requêtes paramétrées contre les injections SQL.
+     - `query(PDO $pdo, string $sql, bool $single = true)` : Exécution directe de requêtes SELECT avec choix du retour (unitaire via `fetch()` ou multiple via `fetchAll()`).
+     - `executeQuery(PDO $pdo, string $sql, array $datas = [], bool $single = true)` : Requêtage paramétré complet (fetch unitaire ou global).
+     - `executeUpdate(PDO $pdo, string $sql, array $datas = [])` : Exécution des requêtes d'écriture (INSERT, UPDATE, DELETE) avec gestion de l'ID auto-incrémenté (`lastInsertId()`) ou du nombre de lignes affectées (`rowCount()`).
+     - `getAllTable(string $table)` : Récupération générique de l'ensemble des enregistrements d'une table.
+
+- **Points Clés de Validation :**
+  - Syntaxe PHP validée sans erreur.
+  - Protection contre les injections SQL via les requêtes préparées (`PDOStatement`).
+  - Gestion des erreurs activée en mode exception.
+
+---
+
