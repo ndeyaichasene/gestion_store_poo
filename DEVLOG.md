@@ -157,9 +157,47 @@ Le modèle métier POO s'articule autour des entités suivantes :
      - Maintien d'une frontière claire : les entités encapsulent l'état et les règles métier locales (en mémoire), tandis que l'accès aux données, la persistance et les requêtes SQL sont délégués aux modèles/repositories.
 
 - **Points Clés de Validation :**
-  - Validation syntaxique `php -l` sur l'ensemble des  fichiers entités 
+  - Validation syntaxique sur l'ensemble des fichiers entités.
   - Respect de l'intégrité du diagramme de classes UML et de la modélisation relationnelle.
 
 ---
+
+### Entrée 5 : Phase 2 (Repositories & SQL Sécurisé)
+- **Fichiers associés :**
+  - Répertoire : `src/Repository/`
+  - Classes : `ProduitRepository.php`, `ClientRepository.php`, `FournisseurRepository.php`
+
+- **Réalisations & Architecture :**
+  1. **Pattern Repository & Sécurité SQL :**
+     - Implémentation du pattern Repository pour découpler la persistance des données des entités du domaine.
+     - Utilisation systématique de requêtes préparées PDO via `Database::executeQuery()` et `Database::executeUpdate()` pour immuniser l'application contre les injections SQL.
+     - Injection de dépendance de l'instance `PDO` avec fallback transparent sur le singleton `Database::connexionDB()`.
+
+  2. **Opérations CRUD & Requêtes Métiers Spécifiques :**
+     - **`ProduitRepository`** :
+       - Lecture : `getAllProduit()`, `getProduitById()`, `getProduitByCode()`, `getProduitByCategorie()`.
+       - Gestion des stocks : `getAlertesStock()` (filtre `qte_stock <= seuil_alerte`), `updateStock()`.
+       - Écriture : `saveProduit()`, `updateProduit()`, `deleteProduit()`,`transformerEnObjetProduit`.
+       - Hydratation : conversion structurée des enregistrements SQL vers l'entité `Produit`.
+     - **`ClientRepository`** :
+       - Lecture & Filtres : `getAllClient()`, `getClientById()`, `getClientByTelephone()`.
+       - Suivi des créances : `getClientsAvecDettes()` (filtre `solde_dette > 0`), `updateSoldeDette()`.
+       - Recherche multicritère : `searchClient()` sur le nom, prénom ou téléphone.
+       - Écriture & Hydratation : `saveClient()`, `updateClient()`, `deleteClient()`, `transformerEnObjetClient()`.
+     - **`FournisseurRepository`** :
+       - Lecture & Filtres : `getAllFournisseur()`, `getFournisseurById()`, `getFournisseurByTelephone()`, `getFournisseurByEmail()`.
+       - Recherche multicritère : `searchFournisseur()` sur le nom, téléphone ou email.
+       - Écriture & Hydratation : `saveFournisseur()`, `updateFournisseur()`, `deleteFournisseur()`, `transformerEnObjetFournisseur()`.
+
+  3. **Hydratation & Typage Fort :**
+     - Transformation stricte des tableaux associatifs issus des `FETCH_ASSOC` en instances d'objets du modèle métier.
+
+- **Points Clés de Validation :**
+  - Validation syntaxique  sur l'ensemble des fichiers `src/Repository/*.php` .
+  - Respect des conventions d'architecture et de sécurité SQL.
+  - hydratation qui consiste a transformer un tableau de base de donne en instance entite
+
+---
+
 
 

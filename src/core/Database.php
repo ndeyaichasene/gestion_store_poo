@@ -62,12 +62,4 @@ class Database
         }
         return $statement->rowCount();
     }
-
-    public static function getAllTable(string $table): array
-    {
-        $pdo = self::connexionDB();
-        $sql = "SELECT * FROM {$table}";
-        $res = self::query($pdo, $sql, false);
-        return is_array($res) ? $res : [];
-    }
 }
