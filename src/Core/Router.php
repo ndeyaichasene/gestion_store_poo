@@ -2,50 +2,99 @@
 
 class Router
 {
-   
-    public static function dispatch(): void
+    private array $routes = [];
+
+    public function __construct()
     {
-        $view = $_GET['view'] ?? 'pos';
+        $this->routes = [
+            '/' => [
+                'controller' => 'PosController',
+                'action' => 'index'
+            ],
+            '/pos' => [
+                'controller' => 'PosController',
+                'action' => 'index'
+            ],
+            '/pos/addToCart' => [
+                'controller' => 'PosController',
+                'action' => 'addToCart'
+            ],
+            '/pos/removeToCart' => [
+                'controller' => 'PosController',
+                'action' => 'removeToCart'
+            ],
+            '/pos/addVente' => [
+                'controller' => 'PosController',
+                'action' => 'addVente'
+            ],
+            '/dette' => [
+                'controller' => 'DetteController',
+                'action' => 'index'
+            ],
+            '/dette/remboursement' => [
+                'controller' => 'DetteController',
+                'action' => 'remboursement'
+            ],
+            '/approvisionnement' => [
+                'controller' => 'ApprovisionnementController',
+                'action' => 'index'
+            ],
+            '/approvisionnement/reception' => [
+                'controller' => 'ApprovisionnementController',
+                'action' => 'reception'
+            ],
+        ];
+    }
 
-        switch ($view) {
-            case 'pos':
-                require_once ROOT_PATH . '/src/Controller/POSController.php';
-                $controller = new POSController();
-                $controller->index();
-                break;
+    public function redirection(): void
+    {
+        $rawUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 
-            case 'dashboard':
-            case 'admin':
-                require_once ROOT_PATH . '/src/Repository/VenteRepository.php';
-                $venteRepo = new VenteRepository();
-                $stats = $venteRepo->getStats();
-                $activePage = 'dashboard';
-                require_once ROOT_PATH . '/views/admin/index.php';
-                break;
+        // Support transparent pour les requêtes ?view=... (mode GET classique)
+        if ($rawUri === '/' || $rawUri === '/index.php' || $rawUri === '') {
+            if (isset($_GET['view'])) {
+                $viewParam = trim((string)$_GET['view'], '/');
+                if ($viewParam === 'dettes') {
+                    $rawUri = '/dette';
+                } elseif ($viewParam === 'stock' || $viewParam === 'supplies') {
+                    $rawUri = '/approvisionnement';
+                } else {
+                    $rawUri = '/' . $viewParam;
+                }
+            } else {
+                $rawUri = '/pos';
+            }
+        }
 
-            case 'dettes':
-                $activePage = 'dettes';
-                require_once ROOT_PATH . '/views/dettes/index.php';
-                break;
+        // Nettoyage de l'URI (tolérance slash terminal)
+        $uri = (strlen($rawUri) > 1) ? rtrim($rawUri, '/') : $rawUri;
 
-            case 'stock':
-            case 'supplies':
-                $activePage = 'stock';
-                require_once ROOT_PATH . '/views/stock/index.php';
-                break;
+        // Alias de compatibilité
+        if ($uri === '/dettes') {
+            $uri = '/dette';
+        }
 
-            case 'inventaire':
-            case 'catalog':
-                $activePage = 'inventaire';
-                require_once ROOT_PATH . '/views/inventaire/index.php';
-                break;
+        if (!isset($this->routes[$uri])) {
+            http_response_code(404);
+            echo "Page introuvable";
+            exit;
+        }
 
-            default:
-                
-                require_once ROOT_PATH . '/src/Controller/POSController.php';
-                $controller = new POSController();
-                $controller->index();
-                break;
+        $controllerClass = $this->routes[$uri]['controller'];
+        $action = $this->routes[$uri]['action'];
+
+        if (class_exists($controllerClass)) {
+            $controllerInstance = new $controllerClass();
+
+            if (method_exists($controllerInstance, $action)) {
+                $controllerInstance->$action();
+            } else {
+                http_response_code(500);
+                echo "Erreur : La méthode '$action' est introuvable.";
+            }
+        } else {
+            http_response_code(404);
+            echo "Erreur : Le contrôleur '$controllerClass' est introuvable.";
         }
     }
 }
