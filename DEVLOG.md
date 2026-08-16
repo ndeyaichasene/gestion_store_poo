@@ -1,268 +1,185 @@
-#  Dossier de Conception UML - StoreManager Pro ERP
+# 📓 Journal de Développement (DEVLOG) — StoreManager Pro ERP
 
-# 📓 Journal de Développement (DEVLOG)
-**Projet** : StoreManager Pro (ERP PHP/POO)
-**Nom & Prénom** [NDEYE AISSATOU SENE P8] 
-
----
-
-### Entrée 1.  Présentation des 4 Profils Utilisateurs (Diagrammes Use Case)
-
-L'application découpe les responsabilités selon **4 rôles métier** et leurs vues autorisées :
-
--  **Admin Boutique** : [`usecase_admin.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_admin.puml) — Contrôle total : Tableau de bord (KPIs financiers, dernières ventes, dettes critiques), Caisse POS, Dettes, Approvisionnements et Catalogue.
-
--  **Chargé de Vente** : [`usecase_vendeur.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_vendeur.puml) — Accès restreint à la caisse tactile POS (recherche produit, constitution panier, sélection client, choix mode paiement, validation vente) et au suivi des dettes (enregistrement des versements).
-
--  **Chargé de Stock** : [`usecase_stock.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_stock.puml) — Gestion des approvisionnements (réception de Bons de Livraison BL) et consultation du catalogue produits (alertes stock critique) et fournisseurs.
-
--  **Inventaire** : [`usecase_inventaire.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_inventaire.puml) — Accès à l'écran Catalogue pour la consultation et le comptage des stocks, ainsi que la gestion des fiches clients et fournisseurs.
-
--  **Diagramme Global** : [`usecase.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase.puml) — Vue d'ensemble récapitulative des cas d'utilisation et des permissions par profil.
+**Projet** : StoreManager Pro (ERP de Gestion Commerciale & Caisse POS en PHP / POO)  
+**Auteur** : NDEYE AISSATOU SENE (P8)  
+**Architecture** : POO / MVC Modulaire (Core, Model/Entity, Repository, Service, Controller, Views)
 
 ---
 
-## a.  Diagramme de Classes POO ([`class_diagram.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/class_diagram.puml))
+## 📌 Entrée 1 : Dossier de Conception UML & Modélisation des Rôles
 
-### Architecture & Modélisation des Entités
-Le modèle métier POO s'articule autour des entités suivantes :
+### 1.1. Profils Utilisateurs & Cas d'Utilisation (Diagrammes Use Case)
+L'application découpe les responsabilités métier selon **4 profils utilisateurs distincts** modélisés en PlantUML :
 
-- `Role` : Énumération des rôles système (`ADMIN`, `VENTE`, `STOCK`, `INVENTAIRE`).
+- **Admin Boutique** ([`docs/usecase_admin.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_admin.puml)) :  
+  Supervision intégrale du système : tableau de bord analytique (KPIs financiers, suivi des ventes, alertes créances critiques), accès caisse POS, suivi des dettes, validation des approvisionnements, gestion des produits et utilisateurs.
 
-- `Utilisateur` : Gestion du compte utilisateur, authentification et contrôle des permissions .
+- **Chargé de Vente** ([`docs/usecase_vendeur.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_vendeur.puml)) :  
+  Opérations de caisse POS (recherche et ajout d'articles au panier, sélection du client débiteur/comptant, vérification du plafond de crédit, choix du mode de règlement, validation de commande) et consultation/versement sur les dettes clients.
 
-- `Client` : Gestion des coordonnées, du solde de dette cumulé et du plafond de crédit.
+- **Chargé de Stock** ([`docs/usecase_stock.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_stock.puml)) :  
+  Gestion logistique des entrées en stock : enregistrement et réception des Bons de Livraison (BL) fournisseurs, pointage des quantités et consultation des alertes de rupture/stock critique.
 
-- `Fournisseur` : Partenaire approvisionneur (coordonnées et suivi).
+- **Responsable Inventaire** ([`docs/usecase_inventaire.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase_inventaire.puml)) :  
+  Gestion du catalogue d'articles (produits, catégories, prix d'achat/vente, seuils d'alerte), comptage des stocks physiques et tenue des répertoires clients et fournisseurs.
 
-- `Produit` & `Categorie` : Catalogue d'articles avec seuil d'alerte  et ajustement de stock.
+- **Vue d'Ensemble des Cas d'Utilisation** ([`docs/usecase.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/usecase.puml)) :  
+  Diagramme récapitulatif global des interactions et des frontières d'autorisation par acteur.
 
-- `Commande` & `LigneCommande` : Transactions de vente en caisse POS (composition 1 vers N).
+### 1.2. Diagramme de Classes Métier POO ([`docs/class_diagram.puml`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/class_diagram.puml))
+Modélisation orientée objet des 12 entités fondamentales du domaine avec leurs relations (associations, compositions, multiplicités) :
+- `Role`, `Utilisateur` : Authentification et habilitation selon les profils.
+- `Client`, `Fournisseur` : Gestion des tiers, suivi des plafonds de crédit et de l'encours de dette.
+- `Produit` : Gestion des caractéristiques d'articles, valorisation et seuils d'alerte.
+- `Vente`, `LigneVente` : Transactions commerciales de caisse (relation composition 1 vers N).
+- `Dette`, `Paiement` : Suivi des créances clients et règlements échelonnés.
+- `Approvisionnement`, `LigneApprovisionnement` : Réception des marchandises fournisseurs et mise à jour des stocks.
 
-- `Dette` & `PaiementDette` : Suivi financier des impayés avec versements partiels .
-
-- `Approvisionnement` & `LigneApprovisionnement` : Réceptions des Bons de Livraison fournisseurs avec incrémentation automatique du stock.
-
----
-
-## b.  Matrice de Traçabilité Use Cases vs Entités
-
-
-
-    Vendeur[ Chargé de Vente] --> Commande[Commande / LigneCommande]
-    Commande --> Client[Client / Dette]
-    Dette --> Paiement[PaiementDette]
-    Stock[Chargé de Stock] --> Approvisionnement[Approvisionnement / LigneApprovisionnement]
-    Approvisionnement --> Fournisseur[Fournisseur]
-    Approvisionnement --> Produit[Produit]
-    Inventaire[ Inventaire] --> Produit[Produit / Categorie]
-    Inventaire --> Client
-    Inventaire --> Fournisseur
-    Admin[ Admin Boutique] --> Utilisateur[Utilisateur / Role]
-
-
+### 1.3. Matrice de Traçabilité Use Cases vs Entités ([`docs/dossier_conception.md`](file:///home/aicha/Bureau/POO/gestion_boutique/docs/dossier_conception.md))
+Cartographie reliant chaque acteur métier aux entités qu'il manipule directement dans l'ERP.
 
 ---
 
-### Entrée 2 : Modélisation Relationnelle & Implémentation SQL
-- **Fichiers associés :**
-  - Schéma PostgreSQL : SQL/schema.sql
-  - Schéma SQLite : SQL/schema_sqlite.sql
+## 🗄️ Entrée 2 : Modélisation Relationnelle & Schémas SQL
 
-- **Réalisations :**
-  Création et validation des scripts DDL pour PostgreSQL et SQLite avec un découpage en 11 tables relationnelles :
+- **Fichiers associés** :
+  - Script PostgreSQL : [`sql/schema.sql`](file:///home/aicha/Bureau/POO/gestion_boutique/sql/schema.sql)
+  - Script SQLite : [`sql/schema_sqlite.sql`](file:///home/aicha/Bureau/POO/gestion_boutique/sql/schema_sqlite.sql)
+  - Base de données active : `erp.db`
 
-  1. **Gestion des Accès & Utilisateurs :**
-     - `roles` : Référentiel des rôles (`ADMIN`, `VENTE`, `STOCK`, `INVENTAIRE`).
-     - `utilisateurs` : Comptes utilisateurs avec contrainte d'unicité sur email/téléphone et liaison clé étrangère vers `roles`.
-
-  2. **Tiers & Partenaires :**
-     - `clients` : Coordonnées, `solde_dette` et `limite_credit` avec contraintes `CHECK >= 0`.
-     - `fournisseurs` : Coordonnées et contacts pour les approvisionnements.
-
-  3. **Catalogue & Inventaire :**
-     - `produits` : Identification (`code` UNIQUE, `libelle`, `categorie`), gestion tarifaire (`prix_achat`, `prix_vente` avec contrainte `CHECK (prix_vente >= prix_achat)`), niveau de stock `qte_stock` et `seuil_alerte`.
-
-  4. **Cycle de Vente & Caisse POS :**
-     - `modes_paiement` : Modalités de règlement (Espèces, Wave, Orange Money, Chèque, etc.).
-     - `ventes` : En-tête des ventes avec référence unique, montants (`montant_total`, `montant_verse`), statut (`COMPTANT`, `AVANCE`, `CREDIT_TOTAL`), liaison client et vendeur.
-     - `lignes_vente` : Détail des articles vendus, quantités (`CHECK > 0`), prix unitaires et intégrité référentielle en cascade.
-
-  5. **Gestion Financière des Dettes & Règlements :**
-     - `dettes` : Générée pour toute vente à crédit ou avance, avec vérification stricte `CHECK (montant_paye + montant_restant = montant_initial)` et statuts (`EN_COURS`, `SOLDEE`).
-     - `paiements` : Historique des versements sur une dette avec mode de paiement, utilisateur responsable et validation de statut.
-
-  6. **Approvisionnements & Réceptions :**
-     - `approvisionnements` : Bons de livraison avec référence unique, statut (`EN_ATTENTE`, `RECUE`, `ANNULE`), dates de commande et de réception.
-     - `lignes_approvisionnement` : Articles commandés vs reçus (`CHECK (quantite_recue <= quantite_appro)`), prix d'achat et sous-totaux.
-
-- **Points Clés d'Intégrité & Robustesse :**
-  - Application de contraintes `CHECK` strictes pour interdire les valeurs financières ou quantités négatives.
-  - Gestion des règles de suppression (`ON DELETE CASCADE` pour les lignes dépendantes, `ON DELETE RESTRICT` pour préserver l'historique financier et référentiel).
-  - Adaptation dialectale SQLite (`AUTOINCREMENT`, types `NUMERIC`/`TEXT`) et PostgreSQL (`SERIAL`, types `DECIMAL`, `TIMESTAMP`).
-
+### Réalisations & Structure de la Base de Données (12 Tables) :
+1. **`roles`** : Référentiel des rôles système (`ADMIN`, `VENTE`, `STOCK`, `INVENTAIRE`).
+2. **`utilisateurs`** : Comptes collaborateurs avec identifiants uniques, hash de mot de passe et clé étrangère vers `roles`.
+3. **`clients`** : Registre clients avec contraintes d'intégrité (`CHECK solde_dette >= 0`, `CHECK limite_credit >= 0`).
+4. **`fournisseurs`** : Coordonnées des partenaires d'approvisionnement.
+5. **`produits`** : Catalogue articles (`code` UNIQUE, `libelle`, `categorie`, `prix_achat`, `prix_vente`, `qte_stock`, `seuil_alerte`) avec contrainte `CHECK (prix_vente >= prix_achat)`.
+6. **`modes_paiement`** : Modalités d'encaissement (Espèces, Wave, Orange Money, Chèque, Virement).
+7. **`ventes`** : Entête de vente (`reference` UNIQUE, `montant_total`, `montant_verse`, `statut` : `COMPTANT`, `AVANCE`, `CREDIT_TOTAL`).
+8. **`lignes_vente`** : Articles vendus avec quantité (`CHECK quantite > 0`), prix unitaire et calcul du sous-total.
+9. **`dettes`** : Créances générées sur ventes à crédit (`montant_initial`, `montant_paye`, `montant_restant`, `statut` : `EN_COURS`, `SOLDEE`) avec contrainte de cohérence `CHECK (montant_paye + montant_restant = montant_initial)`.
+10. **`paiements`** : Historique des versements sur dettes avec référence de dette, utilisateur encaisseur et mode de paiement.
+11. **`approvisionnements`** : Bons de réception fournisseurs (`reference`, `statut` : `EN_ATTENTE`, `RECUE`, `ANNULE`, dates de commande et de réception).
+12. **`lignes_approvisionnement`** : Lignes de réception d'articles avec suivi des quantités commandées vs reçues (`CHECK quantite_recue <= quantite_appro`).
 
 ---
 
-### Entrée 3 : Couche d'Accès aux Données & Singleton PDO (Database.php)
-- **Fichiers associés :**
-  - Classe de connexion et d'abstraction DB : src/core/Database.php
+## ⚙️ Entrée 3 : Couche Fondamentale (Core)
 
-- **Réalisations & Architecture :**
-  1. **Pattern Singleton PDO :**
-     - Implémentation d'une instance unique `PDO` partagée via `connexionDB()` / `getInstanceDB()` pour optimiser les ressources et éviter les connexions redondantes.
-     - Configuration des attributs PDO par défaut : mode d'erreur en exceptions (`PDO::ERRMODE_EXCEPTION`) et mode de récupération associatif (`PDO::FETCH_ASSOC`).
+- **Fichiers associés** :
+  - Connexion & Abstraction DB : [`src/Core/Database.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Core/Database.php)
+  - Gestionnaire de Session : [`src/Core/SessionManager.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Core/SessionManager.php)
 
-  2. **Stratégie Multi-Driver (PostgreSQL & SQLite Fallback) :**
-     - Tentative de connexion prioritaire sur PostgreSQL (`pgsql:host=localhost;port=5432;dbname=storemanager`).
-     - Basculement automatique en cas d'erreur vers SQLite (`sqlite:erp.db`).
-     - Suivi du driver actif via l'attribut statique `$driver` et accesseur `getDriver()`.
+### Réalisations & Architecture :
+1. **Singleton PDO & Multi-Driver (`Database.php`)** :
+   - Instance unique partagée `PDO` via `Database::connexionDB()` / `getInstanceDB()`.
+   - Stratégie de basculement automatique : tentative PostgreSQL (`pgsql`) avec fallback transparent sur SQLite (`sqlite:erp.db`).
+   - Configuration stricte des options PDO (`ERRMODE_EXCEPTION`, `FETCH_ASSOC`).
+   - Méthodes utilitaires CRUD sécurisées : `executeQuery()` (lecture sécurisée unitaire/multiple), `executeUpdate()` (écriture INSERT/UPDATE/DELETE avec retour de `lastInsertId` ou `rowCount`), `prepare()`, `query()`, et `getAllTable()`.
 
-  3. **Méthodes Utilitaires CRUD Génériques :**
-     - `prepare(PDO $pdo, string $sql, array $datas)` : Préparation et exécution sécurisée des requêtes paramétrées contre les injections SQL.
-     - `query(PDO $pdo, string $sql, bool $single = true)` : Exécution directe de requêtes SELECT avec choix du retour (unitaire via `fetch()` ou multiple via `fetchAll()`).
-     - `executeQuery(PDO $pdo, string $sql, array $datas = [], bool $single = true)` : Requêtage paramétré complet (fetch unitaire ou global).
-     - `executeUpdate(PDO $pdo, string $sql, array $datas = [])` : Exécution des requêtes d'écriture (INSERT, UPDATE, DELETE) avec gestion de l'ID auto-incrémenté (`lastInsertId()`) ou du nombre de lignes affectées (`rowCount()`).
-     - `getAllTable(string $table)` : Récupération générique de l'ensemble des enregistrements d'une table.
-
-- **Points Clés de Validation :**
-  - Syntaxe PHP validée sans erreur.
-  - Protection contre les injections SQL via les requêtes préparées (`PDOStatement`).
-  - Gestion des erreurs activée en mode exception.
+2. **Gestionnaire de Session POO (`SessionManager.php`)** :
+   - Encapsulation des accès à `$_SESSION` : `start()`, `get()`, `set()`, `has()`, `unset()`, `clear()`, `destroy()`.
+   - Support des messages flash de notification (`flash_success`, `flash_error`) et persistance des contextes utilisateur et panier.
 
 ---
 
-### Entrée 4 : Implémentation Complète des Entités Métiers POO (Encapsulation & Logique Domaine)
-- **Fichiers associés :**
-  - Répertoire des entités : `src/Model/Entity/`
-  - Classes : `Role.php`, `Utilisateur.php`, `Client.php`, `Fournisseur.php`, `Produit.php`, `ModePaiement.php`, `Vente.php`, `LigneVente.php`, `Dette.php`, `Paiement.php`, `Approvisionnement.php`, `LigneApprovisionnement.php`
+## 📦 Entrée 4 : Entités Métiers POO (Modèle Domaine)
 
-- **Réalisations & Architecture :**
-  1. **Encapsulation Stricte & Typage Fort (PHP 8+) :**
-     - J'ai constater que tous les attributs sont déclarés en visibilité `private` avec un typage strict (`int`, `string`, `float`, `DateTime`, `?TypeObjets`).
-     - Constructeurs paramétrés avec valeurs par défaut permettant l'instanciation directe pour lui donner un etat.
-     - Accesseurs (`getters`) et mutateurs (`setters`) complets et typés pour l'ensemble des  entités.
-
-  2. **Méthodes Métiers Intrinsèques (Pure Logique Métier sans dépendance DB) :**
-     - **`Client`** : Contrôle du plafond de crédit (`peutPrendreCredit()`, `getCreditDisponible()`), cumul et déduction de dettes (`ajouterDette()`, `diminuerDette()`), indicateurs d'état (`hasDette()`, `isLimiteAtteinte()`).
-     - **`Produit`** : Surveillance de stock (`isStockCritique()`, `isEnRupture()`, `isDisponible()`), mouvements unitaires (`diminuerStock()`, `augmenterStock()`), indicateurs financiers (`getMargeUnitaire()`, `getValeurStock()`).
-     - **`Vente`** : Calcul automatique de l'impayé (`getMontantRestant()`), vérification du solde (`isSoldee()`, `isCredit()`), détermination dynamique du statut (`determinerStatut()` : `COMPTANT`, `AVANCE`, `CREDIT_TOTAL`), ajustement par versement (`ajouterVersement()`).
-     - **`Dette`** : Vérification de clôture (`isSoldee()`, `isEnCours()`), enregistrement d'un versement et mise à jour dynamique du statut (`enregistrerPaiement()`).
-     - **`Approvisionnement` & `LigneApprovisionnement`** : Gestion du cycle de vie du bon de livraison (`isRecu()`, `isEnAttente()`, `validerReception()`, `annuler()`), suivi des réceptions partielles (`isTotalementRecue()`, `getQuantiteRestante()`, `receptionner()`), sous-total.
-     - **`LigneVente`** : Calcul automatique du sous-total (`getSousTotal() = quantite * prix_unitaire`).
-     - **`Paiement`** : Validation et annulation de règlements (`valider()`, `annuler()`, `isValide()`, `isAnnule()`).
-     - **`Utilisateur`** : Vérification du mot de passe haché (`isPassword()`), contrôles de permissions par profil (`isAdmin()`, `isVendeur()`, `isStock()`, `isInventaire()`, `hasRole()`).
-
-  3. **Séparation Stricte des Responsabilités :**
-     - Maintien d'une frontière claire : les entités encapsulent l'état et les règles métier locales (en mémoire), tandis que l'accès aux données, la persistance et les requêtes SQL sont délégués aux modèles/repositories.
-
-- **Points Clés de Validation :**
-  - Validation syntaxique sur l'ensemble des fichiers entités.
-  - Respect de l'intégrité du diagramme de classes UML et de la modélisation relationnelle.
+- **Répertoire** : [`src/Model/Entity/`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/)
+- **12 Classes Entités** :
+  1. [`Role.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Role.php) : Gestion des libellés de profils.
+  2. [`Utilisateur.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Utilisateur.php) : Données du compte, vérification du mot de passe et helpers de rôle (`isAdmin()`, `isVendeur()`, `isStock()`, `isInventaire()`, `hasRole()`).
+  3. [`Client.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Client.php) : Encapsulation du solde de dette, contrôle du plafond de crédit (`peutPrendreCredit()`, `getCreditDisponible()`, `ajouterDette()`, `diminuerDette()`).
+  4. [`Fournisseur.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Fournisseur.php) : Fiche de contact fournisseur.
+  5. [`Produit.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Produit.php) : Logique de stock (`isDisponible()`, `isStockCritique()`, `isEnRupture()`, `diminuerStock()`, `augmenterStock()`, `getMargeUnitaire()`, `getValeurStock()`).
+  6. [`ModePaiement.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/ModePaiement.php) : Types de règlement.
+  7. [`Vente.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Vente.php) : En-tête de vente avec calculs de solde (`getMontantRestant()`, `isSoldee()`, `isCredit()`, `determinerStatut()`, `ajouterVersement()`).
+  8. [`LigneVente.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/LigneVente.php) : Détail d'un article vendu (`getSousTotal() = quantite * prix_unitaire`).
+  9. [`Dette.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Dette.php) : Gestion des créances, contrôle d'apurement (`isSoldee()`, `isEnCours()`) et enregistrement de versement (`enregistrerPaiement()`).
+  10. [`Paiement.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Paiement.php) : Enregistrement de versement avec statut (`valider()`, `annuler()`, `isValide()`).
+  11. [`Approvisionnement.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/Approvisionnement.php) : Cycle de vie du BL (`isRecu()`, `isEnAttente()`, `validerReception()`, `annuler()`).
+  12. [`LigneApprovisionnement.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Model/Entity/LigneApprovisionnement.php) : Suivi des réceptions partielles/totales (`isTotalementRecue()`, `getQuantiteRestante()`, `receptionner()`, `getSousTotal()`).
 
 ---
 
-### Entrée 5 : Phase 2 (Repositories & SQL Sécurisé)
-- **Fichiers associés :**
-  - Répertoire : `src/Repository/`
-  - Classes : `ProduitRepository.php`, `ClientRepository.php`, `FournisseurRepository.php`
+## 🗃️ Entrée 5 : Couche d'Accès aux Données (Repositories)
 
-- **Réalisations & Architecture :**
-  1. **Pattern Repository & Sécurité SQL :**
-     - Implémentation du pattern Repository pour découpler la persistance des données des entités du domaine.
-     - Utilisation systématique de requêtes préparées PDO via `Database::executeQuery()` et `Database::executeUpdate()` pour immuniser l'application contre les injections SQL.
-     - Injection de dépendance de l'instance `PDO` avec fallback transparent sur le singleton `Database::connexionDB()`.
+- **Répertoire** : [`src/Repository/`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/)
+- **6 Classes Repositories Implémentées** :
+  1. [`ProduitRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/ProduitRepository.php) :  
+     - Lecture : `getAllProduit()`, `getProduitById()`, `getProduitByCode()`, `getProduitByCategorie()`.
+     - Alertes et mise à jour de stock : `getAlertesStock()`, `updateStock()`.
+     - Écriture : `saveProduit()`, `updateProduit()`, `deleteProduit()`.
+     - Hydratation : `transformerEnObjetProduit()`.
 
-  2. **Opérations CRUD & Requêtes Métiers Spécifiques :**
-     - **`ProduitRepository`** :
-       - Lecture : `getAllProduit()`, `getProduitById()`, `getProduitByCode()`, `getProduitByCategorie()`.
-       - Gestion des stocks : `getAlertesStock()` (filtre `qte_stock <= seuil_alerte`), `updateStock()`.
-       - Écriture : `saveProduit()`, `updateProduit()`, `deleteProduit()`,`transformerEnObjetProduit`.
-       - Hydratation : conversion structurée des enregistrements SQL vers l'entité `Produit`.
-     - **`ClientRepository`** :
-       - Lecture & Filtres : `getAllClient()`, `getClientById()`, `getClientByTelephone()`.
-       - Suivi des créances : `getClientsAvecDettes()` (filtre `solde_dette > 0`), `updateSoldeDette()`.
-       - Recherche multicritère : `searchClient()` sur le nom, prénom ou téléphone.
-       - Écriture & Hydratation : `saveClient()`, `updateClient()`, `deleteClient()`, `transformerEnObjetClient()`.
-     - **`FournisseurRepository`** :
-       - Lecture & Filtres : `getAllFournisseur()`, `getFournisseurById()`, `getFournisseurByTelephone()`, `getFournisseurByEmail()`.
-       - Recherche multicritère : `searchFournisseur()` sur le nom, téléphone ou email.
-       - Écriture & Hydratation : `saveFournisseur()`, `updateFournisseur()`, `deleteFournisseur()`, `transformerEnObjetFournisseur()`.
+  2. [`ClientRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/ClientRepository.php) :  
+     - Lecture & Recherche : `getAllClient()`, `getClientById()`, `getClientByTelephone()`, `searchClient()`.
+     - Créances : `getClientsAvecDettes()`, `updateSoldeDetteClient()`.
+     - Écriture & Hydratation : `saveClient()`, `updateClient()`, `deleteClient()`, `transformerEnObjetClient()`.
 
-  3. **Hydratation & Typage Fort :**
-     - Transformation stricte des tableaux associatifs issus des `FETCH_ASSOC` en instances d'objets du modèle métier.
+  3. [`FournisseurRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/FournisseurRepository.php) :  
+     - Lecture & Recherche : `getAllFournisseur()`, `getFournisseurById()`, `getFournisseurByTelephone()`, `getFournisseurByEmail()`, `searchFournisseur()`.
+     - Écriture & Hydratation : `saveFournisseur()`, `updateFournisseur()`, `deleteFournisseur()`, `transformerEnObjetFournisseur()`.
 
-- **Points Clés de Validation :**
-  - Validation syntaxique  sur l'ensemble des fichiers `src/Repository/*.php` .
-  - Respect des conventions d'architecture et de sécurité SQL.
-  - hydratation qui consiste a transformer un tableau de base de donne en instance entite
+  4. [`VenteRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/VenteRepository.php) :  
+     - Lecture des ventes et statistiques : `getAllVente()`, `getVenteById()`, `getLignesVente()`, `getPosStats()`.
+     - Écriture : `saveVente()`, `saveLigneVente()`, `transformerEnObjetVente()`, `transformerEnObjetLigneVente()`.
+
+  5. [`DetteRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/DetteRepository.php) :  
+     - Lecture et indicateurs : `getAllDettes()`, `getDetteById()`, `getDettesByClientId()`, `getPaiementsByDetteId()`, `getStatsDettes()`.
+     - Écriture : `saveDette()`, `updateDette()`, `savePaiement()`.
+     - Hydratation : `transformerEnObjetDette()`, `transformerEnObjetPaiement()`.
+
+  6. [`ModePaiementRepository.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Repository/ModePaiementRepository.php) :  
+     - Lecture : `getAllModePaiement()`, `getModePaiementById()`.
 
 ---
 
-### Entrée 6 : Phase 2 (VenteService - Service Métier POS & Transaction SQL)
-- **Fichiers associés :**
-  - Répertoire : `src/Service/`
-  - Classe : `VenteService.php`
+## 💼 Entrée 6 : Couche Service Métier (VenteService)
 
-- **Réalisations & Architecture :**
-  1. **Gestion Complète du Panier Caisse (POS) :**
-     - Ajout, incrémentation et modification de quantité avec vérification dynamique du stock disponible (`ajouterArticle()`, `modifierQuantite()`).
-     - Suppression d'article ciblé (`supprimerArticle()`), réinitialisation globale (`viderPanier()`) et consultation (`getPanier()`).
-     - Calculs en temps réel du montant total (`calculerTotalPanier()`) et du nombre total d'articles (`getNombreArticles()`).
+- **Fichier associé** : [`src/Service/VenteService.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Service/VenteService.php)
 
-  2. **Contrôles Métiers & Sécurité Préalable :**
-     - Vérification de l'état non-vide du panier.
-     - Vérification d'existence du client et de sa solvabilité.
-     - Contrôle strict du plafond de crédit client en cas de vente à crédit total ou avance (`client->peutPrendreCredit($montantRestant)`).
+### Responsabilités & Fonctionnalités Métier :
+1. **Gestion du Panier de Caisse en Mémoire** :
+   - `ajouterArticle(int $produitId, int $quantite)` : Vérification dynamique de la disponibilité en stock et ajout/incrémentation.
+   - `modifierQuantite(int $produitId, int $nouvelleQuantite)` : Ajustement avec re-validation de stock.
+   - `supprimerArticle(int $produitId)`, `viderPanier()`, `getPanier()`.
+   - `calculerTotalPanier()`, `getNombreArticles()`.
 
-  3. **Transaction SQL Atomique (ACID via PDO) :**
-     - Encadrement complet du processus sous transaction (`beginTransaction()`, `commit()`, `rollBack()`).
-     - Génération d'une référence de vente unique (`genererReferenceVente()`).
-     - Insertion de l'en-tête de vente avec statut automatisé (`COMPTANT`, `AVANCE`, `CREDIT_TOTAL`).
-     - Insertion des lignes de vente (`lignes_vente`) et décrémentation atomique des stocks (`UPDATE produits ... WHERE qte_stock >= :quantite`).
-     - Enregistrement automatique de la créance (`dettes`) et actualisation du solde de dette du client (`clients`) en cas de reliquat impayé.
-
-- **Points Clés de Validation :**
-  - Validation syntaxique  sur `src/Service/VenteService.php` .
-  - Gestion robuste des exceptions (`Throwable`) avec rollback systématique pour garantir l'intégrité de la base de données.
+2. **Validation Transactionnelle Atomique (ACID via PDO)** :
+   - Contrôles préalables : panier non-vide, existence du client, solvabilité et vérification stricte du plafond de crédit (`client->peutPrendreCredit($reliquat)`).
+   - Encadrement sous transaction SQL (`beginTransaction()`, `commit()`, `rollBack()`).
+   - Génération de la référence unique de commande (`CMD-XXXX`).
+   - Insertion de la vente (`ventes`) avec calcul automatique du statut (`COMPTANT`, `AVANCE`, `CREDIT_TOTAL`).
+   - Décrémentation atomique des stocks des articles vendus (`produits.qte_stock`).
+   - Création automatique de la créance (`dettes`) et majoration du solde débiteur du client (`clients.solde_dette`) en cas de reliquat impayé.
 
 ---
 
-### Entrée 7 : Phase 2 (Interface POS - Contrôleur & Modularisation des Vues)
-- **Fichiers associés :**
-  - Contrôleur : `src/Controller/POSController.php`
-  - Repository : `src/Repository/VenteRepository.php`
-  - Layouts : `views/layout/header.php`, `views/layout/footer.php`
-  - Vues par Acteur :
-    - Vente/Caisse POS (Chargé de Vente) : `views/pos/index.php`
-    - Tableau de bord (Admin) : `views/admin/index.php`
-    - Approvisionnements & BL (Chargé de Stock) : `views/stock/index.php`
-    - Répertoires & Catalogue (Inventaire) : `views/inventaire/index.php`
-    - Suivi des Dettes & Remboursements : `views/dettes/index.php`
-  - Fichiers Assets Dédiés :
-    - CSS : `public/css/style.css`
+## 🖥️ Entrée 7 : Interfaces Utilisateurs & Organisation des Vues
 
-- **Réalisations & Architecture :**
-  1. **Découplage Intégral du Code & Architecture MVC :**
-     - Extraction complète du CSS monolithique vers un fichier de style dédié (`public/css/style.css`).
-     - Mise en place d'un système de Layouts réutilisables (`header.php` et `footer.php`) avec navigation dynamique, gestion des rôles et notifications Flash Toast.
-     - Séparation stricte des vues par acteur métier (`views/pos/`, `views/admin/`, `views/stock/`, `views/inventaire/`, `views/dettes/`).
+- **Layouts Partagés** :
+  - En-tête globale & Barre de navigation : [`views/layout/header.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/layout/header.php)
+  - Pied de page : [`views/layout/footer.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/layout/footer.php)
 
-  2. **Contrôleur de Caisse POS (`POSController.php`) :**
-     - Orchestration entre le modèle de données, les repositories (`ProduitRepository`, `ClientRepository`, `VenteRepository`) et le service métier `VenteService`.
-     - Gestion des actions de création de commande POS avec validation de formulaire, hydratation du panier, exécution transactionnelle et retour de messages flash en session.
-     - Préparation des données pour l'affichage réactif (liste des produits disponibles, catalogue des clients avec plafonds de crédit, registre des ventes avec tiroirs d'articles détaillés).
+- **Vues Métiers Découpées** :
+  1. **Caisse Tactile POS (Chargé de Vente)** : [`views/pos/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/pos/index.php)  
+     - KPIs en temps réel (*CA Encaissé Net, Encours Client Total, Commandes Enregistrées*).
+     - Panneau de saisie de vente (sélection client avec solde/plafond, sélecteur de produit avec stock, quantité, panier dynamique, choix du versement et validation).
+     - Registre des ventes récentes avec accordéons déroulants des lignes de commande.
 
-  3. **Interface Caisse Tactile & Ergonomie (`views/pos/index.php`) :**
-     - Panneau de commande sticky avec sélecteur de client (affichage dynamique du crédit restant, de la dette et du plafond).
-     - Sélecteur de produits avec pastilles indicatrices de stock (vert, jaune, rouge).
-     - Tableau interactif du panier avec calcul instantané du montant total net à payer.
-     - Possibilites de vider completement un panier.
-     - Registre général des ventes avec consultation des lignes d'articles via accordéons rétractables.
+  2. **Gestion des Dettes & Créances** : [`views/dettes/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/dettes/index.php)  
+     - Indicateurs financiers (*Créances Actives, Clients Débiteurs, Total Recouvrements*).
+     - Registre des créances avec recherche et statuts (*NON SOLDÉE / SOLDÉE*).
+     - Tiroirs interactifs par créance : historique des acomptes, articles de la vente et formulaire de remboursement avec raccourcis rapides.
 
-- **Points Clés de Validation :**
-  - Validation syntaxique PHP  sur tous les contrôleurs, repositories et vues créés.
-  - Absence de CSS ou de JS inline dans les templates de vue, assurant un code propre, maintenable et évolutif.
-  - Remplacer le JS avec du PHP.
+  3. **Tableau de Bord Administrateur** : [`views/admin/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/admin/index.php)  
+     - Vue analytique globale des indicateurs financiers et performances de la boutique.
 
----
+  4. **Approvisionnements & Réceptions BL (Chargé de Stock)** : [`views/appro/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/appro/index.php)  
+     - Suivi des bordereaux de livraison et réceptions fournisseurs.
+
+  5. **Produits & Tiers (Responsable Inventaire)** : [`views/inventaire/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/inventaire/index.php)  
+     - Catalogue des articles en stock et gestion des répertoires clients et fournisseurs.
+
+- **Design System & Styles** :
+  - Feuille de style CSS Vanilla dédiée : [`public/css/style.css`](file:///home/aicha/Bureau/POO/gestion_boutique/public/css/style.css) (Palette sombre/teal ergonomique, typographie moderne Plus Jakarta Sans, composants de cartes, tableaux, badges et tiroirs réactifs).
