@@ -182,9 +182,7 @@ CREATE TABLE lignes_approvisionnement (
 
 
 -- Nettoyage préalable des tables
-TRUNCATE TABLE lignes_approvisionnement, approvisionnements, paiements, dettes, 
-               lignes_vente, ventes, modes_paiement, produits, fournisseurs, 
-               clients, utilisateurs, roles RESTART IDENTITY CASCADE;
+TRUNCATE TABLE  lignes_vente, ventes RESTART IDENTITY CASCADE;
 
 -- -----------------------------------------------------------------------------
 -- 1. REFERENTIEL DES ROLES

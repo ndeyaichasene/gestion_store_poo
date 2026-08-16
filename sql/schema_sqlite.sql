@@ -2,7 +2,7 @@
 
 CREATE TABLE roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL UNIQUE
+    nom TEXT NOT NULL 
 );
 
 
@@ -14,7 +14,7 @@ CREATE TABLE utilisateurs (
     password TEXT NOT NULL,
     adresse TEXT,
     telephone TEXT,
-    role_id INTEGER NOT NULL UNIQUE,
+    role_id INTEGER NOT NULL ,
 
     FOREIGN KEY (role_id)
         REFERENCES roles(id)

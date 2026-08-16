@@ -1,0 +1,68 @@
+# =========================
+# PHP
+# =========================
+
+# Dépendances Composer
+/vendor/
+
+# Fichiers d'environnement
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDE / Éditeurs
+# =========================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Système
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+
+*.log
+logs/
+
+# =========================
+# Cache / fichiers temporaires
+# =========================
+
+*.tmp
+*.temp
+cache/
+tmp/
+
+# =========================
+# Tests / couverture
+# =========================
+
+.phpunit.result.cache
+.phpunit.cache/
+coverage/
+
+# =========================
+# Base de données locale
+# =========================
+
+*.sqlite
+*.sqlite3
+*.db
+
+# =========================
+# Uploads / fichiers générés
+# =========================
+
+uploads/*
+!uploads/.gitkeep
+
+storage/

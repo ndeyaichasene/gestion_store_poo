@@ -228,6 +228,41 @@ Le modèle métier POO s'articule autour des entités suivantes :
 
 ---
 
+### Entrée 7 : Phase 2 (Interface POS - Contrôleur & Modularisation des Vues)
+- **Fichiers associés :**
+  - Contrôleur : `src/Controller/POSController.php`
+  - Repository : `src/Repository/VenteRepository.php`
+  - Layouts : `views/layout/header.php`, `views/layout/footer.php`
+  - Vues par Acteur :
+    - Vente/Caisse POS (Chargé de Vente) : `views/pos/index.php`
+    - Tableau de bord (Admin) : `views/admin/index.php`
+    - Approvisionnements & BL (Chargé de Stock) : `views/stock/index.php`
+    - Répertoires & Catalogue (Inventaire) : `views/inventaire/index.php`
+    - Suivi des Dettes & Remboursements : `views/dettes/index.php`
+  - Fichiers Assets Dédiés :
+    - CSS : `public/css/style.css`
 
+- **Réalisations & Architecture :**
+  1. **Découplage Intégral du Code & Architecture MVC :**
+     - Extraction complète du CSS monolithique vers un fichier de style dédié (`public/css/style.css`).
+     - Mise en place d'un système de Layouts réutilisables (`header.php` et `footer.php`) avec navigation dynamique, gestion des rôles et notifications Flash Toast.
+     - Séparation stricte des vues par acteur métier (`views/pos/`, `views/admin/`, `views/stock/`, `views/inventaire/`, `views/dettes/`).
 
+  2. **Contrôleur de Caisse POS (`POSController.php`) :**
+     - Orchestration entre le modèle de données, les repositories (`ProduitRepository`, `ClientRepository`, `VenteRepository`) et le service métier `VenteService`.
+     - Gestion des actions de création de commande POS avec validation de formulaire, hydratation du panier, exécution transactionnelle et retour de messages flash en session.
+     - Préparation des données pour l'affichage réactif (liste des produits disponibles, catalogue des clients avec plafonds de crédit, registre des ventes avec tiroirs d'articles détaillés).
 
+  3. **Interface Caisse Tactile & Ergonomie (`views/pos/index.php`) :**
+     - Panneau de commande sticky avec sélecteur de client (affichage dynamique du crédit restant, de la dette et du plafond).
+     - Sélecteur de produits avec pastilles indicatrices de stock (vert, jaune, rouge).
+     - Tableau interactif du panier avec calcul instantané du montant total net à payer.
+     - Possibilites de vider completement un panier.
+     - Registre général des ventes avec consultation des lignes d'articles via accordéons rétractables.
+
+- **Points Clés de Validation :**
+  - Validation syntaxique PHP  sur tous les contrôleurs, repositories et vues créés.
+  - Absence de CSS ou de JS inline dans les templates de vue, assurant un code propre, maintenable et évolutif.
+  - Remplacer le JS avec du PHP.
+
+---
