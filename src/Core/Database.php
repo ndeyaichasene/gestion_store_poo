@@ -42,9 +42,9 @@ class Database
 
     public static function prepare(PDO $pdo, string $sql, array $datas = []): PDOStatement
     {
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($datas);
-        return $stmt;
+        $prepare = $pdo->prepare($sql);
+        $prepare->execute($datas);
+        return $prepare;
     }
 
     public static function executeQuery(PDO $pdo, string $sql, array $datas = [], bool $single = true): array|false
