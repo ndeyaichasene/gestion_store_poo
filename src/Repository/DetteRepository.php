@@ -17,9 +17,7 @@ class DetteRepository
         $this->pdo = $pdo ?? Database::connexionDB();
     }
 
-    /**
-     * Récupère toutes les dettes avec leurs clients et ventes associées
-     */
+   
     public function getAllDettes(?string $statut = null): array
     {
         $sql = "SELECT d.*, 
@@ -53,9 +51,6 @@ class DetteRepository
         return $dettes;
     }
 
-    /**
-     * Récupère une dette par son identifiant unique
-     */
     public function getDetteById(int $id): ?Dette
     {
         $sql = "SELECT d.*, 
@@ -73,9 +68,7 @@ class DetteRepository
         return $data ? $this->transformerEnObjetDette($data) : null;
     }
 
-    /**
-     * Récupère les dettes d'un client spécifique
-     */
+  
     public function getDettesByClientId(int $clientId): array
     {
         $sql = "SELECT d.*, 
@@ -103,9 +96,7 @@ class DetteRepository
         return $dettes;
     }
 
-    /**
-     * Récupère l'historique des paiements d'une dette
-     */
+   
     public function getPaiementsByDetteId(int $detteId): array
     {
         $sql = "SELECT p.*,
@@ -131,9 +122,6 @@ class DetteRepository
         return $paiements;
     }
 
-    /**
-     * Enregistre une nouvelle dette
-     */
     public function saveDette(Dette $dette): int
     {
         $sql = "INSERT INTO dettes (montant_initial, montant_paye, montant_restant, statut, vente_id, client_id)
@@ -149,9 +137,7 @@ class DetteRepository
         ]);
     }
 
-    /**
-     * Met à jour l'état financier et le statut d'une dette
-     */
+  
     public function updateDette(Dette $dette): int
     {
         $sql = "UPDATE dettes 
@@ -168,9 +154,7 @@ class DetteRepository
         ]);
     }
 
-    /**
-     * Enregistre un nouveau paiement sur une dette
-     */
+  
     public function savePaiement(Paiement $paiement): int
     {
         $sql = "INSERT INTO paiements (montant, statut, dette_id, utilisateur_id, mode_paiement_id)
@@ -185,9 +169,7 @@ class DetteRepository
         ]);
     }
 
-    /**
-     * Statistiques financières globales sur les dettes
-     */
+   
     public function getStatsDettes(): array
     {
         $sql = "SELECT 
@@ -207,9 +189,6 @@ class DetteRepository
         ];
     }
 
-    /**
-     * Hydratation d'un enregistrement SQL vers l'entité Dette
-     */
     public function transformerEnObjetDette(array $data): Dette
     {
         $client = new Client();
@@ -250,9 +229,7 @@ class DetteRepository
         );
     }
 
-    /**
-     * Hydratation d'un enregistrement SQL vers l'entité Paiement
-     */
+   
     public function transformerEnObjetPaiement(array $data): Paiement
     {
         $user = new Utilisateur();

@@ -183,3 +183,66 @@ Cartographie reliant chaque acteur métier aux entités qu'il manipule directeme
 
 - **Design System & Styles** :
   - Feuille de style CSS Vanilla dédiée : [`public/css/style.css`](file:///home/aicha/Bureau/POO/gestion_boutique/public/css/style.css) (Palette sombre/teal ergonomique, typographie moderne Plus Jakarta Sans, composants de cartes, tableaux, badges et tiroirs réactifs).
+
+---
+
+## 🎮 Entrée 8 : Contrôleur Caisse POS (PosController)
+
+- **Fichier associé** : [`src/Controller/PosController.php`](file:///home/aicha/Bureau/POO/gestion_boutique/src/Controller/PosController.php)
+
+### Rôle & Architecture :
+Le `PosController` orchestre les interactions du terminal de caisse tactile entre l'interface utilisateur, les repositories de données (`ProduitRepository`, `ClientRepository`, `VenteRepository`), la gestion de session (`SessionManager`) et la couche métier transactionnelle (`VenteService`).
+
+### Méthodes & Logique Implémentée :
+1. **`__construct()`** :
+   - Démarrage sécurisé de la session via `SessionManager::start()`.
+   - Initialisation de la connexion PDO singleton via `Database::connexionDB()`.
+   - Instanciation des dépendances : `ProduitRepository`, `ClientRepository`, `VenteRepository` et `VenteService`.
+   - Initialisation du panier de caisse dans la session (`pos_cart`) s'il n'existe pas.
+
+2. **`index(): void`** :
+   - Récupération du catalogue des produits disponibles pour la vente via `$produitRepository->getAllProduit()`.
+   - Récupération de la liste des clients et de leurs informations de solvabilité via `$clientRepository->getAllClient()`.
+   - Chargement de l'historique des ventes avec hydratation des lignes associées (`$venteRepository->getAllVente()` et `$venteRepository->getLignesVente()`).
+   - Calcul dynamique du total du panier en cours (`$totalPanier`).
+   - Récupération des indicateurs analytiques du POS via `$venteRepository->getPosStats()` (*CA net encaissé, encours client total, nombre de commandes*).
+   - Transmission et consommation des notifications flash (`flash_success`, `flash_error`).
+   - Rendu de la vue de caisse [`views/pos/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/pos/index.php).
+
+3. **`addToCart(): void`** :
+   - Réception et assainissement des paramètres POST (`produit_id`, `quantite`).
+   - Vérification de l'existence de l'article en base de données.
+   - Contrôle préventif du stock disponible en tenant compte des quantités déjà présentes dans le panier.
+   - Ajout ou mise à jour de la ligne d'article dans le panier en session (`pos_cart`) avec calcul du sous-total unitaire.
+   - Enregistrement des messages flash de confirmation ou d'erreur et redirection HTTP propre vers `?view=pos`.
+
+4. **`addVente(): void`** :
+   - Réception des données de validation de commande (`client_id`, `montant_verse`).
+   - Validation de l'intégrité de la commande (sélection obligatoire du client, panier non vide).
+   - Transfert des articles du panier vers le service métier `VenteService`.
+   - Déclenchement de la validation transactionnelle ACID via `VenteService::validerVente()`.
+   - Vidage du panier de session après confirmation de l'enregistrement.
+   - Notification flash de succès et redirection vers la vue POS.
+
+---
+
+## 💻 Entrée 9 : Interface & Composants de la Vue POS (pos/index.php)
+
+- **Fichier associé** : [`views/pos/index.php`](file:///home/aicha/Bureau/POO/gestion_boutique/views/pos/index.php)
+
+### Conception & Fonctionnalités de l'Interface Caisse :
+1. **Barre d'Indicateurs Financiers (KPIs)** :
+   - *CA Encaissé Net* : Affichage du chiffre d'affaires effectivement perçu.
+   - *Encours Client Total* : Suivi du montant global des dettes et créances en circulation.
+   - *Commandes Enregistrées* : Compteur des transactions réalisées.
+
+2. **Console de Caisse & Panier Interactif (Sticky Panel)** :
+   - **Sélecteur Client** : Menu déroulant listant les clients avec leur numéro de téléphone et leur plafond de crédit.
+   - **Sélection d'Article avec Indicateur Visuel de Stock** : Pastilles colorées dynamiques (🟢 stock suffisant, 🟡 stock sous alerte, 🔴 rupture).
+   - **Panier en Direct** : Tableau listant les articles ajoutés, les quantités, les sous-totaux et permettant la suppression unitaire ou le vidage complet du panier.
+   - **Afficheur Digital Grand Format** : Montant total net à payer en FCFA mis en évidence.
+   - **Formulaire de Règlement** : Sélection du mode de paiement (Wave, Orange Money, Espèces, Virement) et saisie du montant versé / acompte avec validation transactionnelle.
+
+3. **Registre des Ventes & Tiroirs de Détails** :
+   - Tableau chronologique des ventes avec référence unique (`#CMD-X`), nom et téléphone du client, montant total et badges d'état colorés (`COMPTANT`, `AVANCE`, `CREDIT_TOTAL`).
+   - Tiroirs accordéons interactifs en JavaScript (`toggleDetails()`) affichant instantanément le détail des lignes de facture (articles, quantités, prix unitaires, sous-totaux et date/heure précise).
