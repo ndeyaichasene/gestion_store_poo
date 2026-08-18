@@ -36,119 +36,119 @@ class Utilisateur
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getNom(): string
+    public  function getNom(): string
     {
-        return self::$nom;
+        return $this->nom;
     }
 
-    public static function getPrenom(): string
+    public  function getPrenom(): string
     {
-        return self::$prenom;
+        return $this->prenom;
     }
 
-    public static function getNomComplet(): string
+    public  function getNomComplet(): string
     {
-        return trim(self::$prenom . " " . self::$nom);
+        return trim($this->prenom . " " . $this->nom);
     }
 
-    public static function getEmail(): string
+    public  function getEmail(): string
     {
-        return self::$email;
+        return $this->email;
     }
 
-    public static function getPassword(): string
+    public  function getPassword(): string
     {
-        return self::$password;
+        return $this->password;
     }
 
-    public static function getAdresse(): string
+    public  function getAdresse(): string
     {
-        return self::$adresse;
+        return $this->adresse;
     }
 
-    public static function getTelephone(): string
+    public  function getTelephone(): string
     {
-        return self::$telephone;
+        return $this->telephone;
     }
 
-    public static function getRole(): ?Role
+    public  function getRole(): ?Role
     {
-        return self::$role;
+        return $this->role;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setNom(string $nom): void
+    public  function setNom(string $nom): void
     {
-        self::$nom = $nom;
+        $this->nom = $nom;
     }
 
-    public static function setPrenom(string $prenom): void
+    public  function setPrenom(string $prenom): void
     {
-        self::$prenom = $prenom;
+        $this->prenom = $prenom;
     }
 
-    public static function setEmail(string $email): void
+    public  function setEmail(string $email): void
     {
-        self::$email = $email;
+        $this->email = $email;
     }
 
-    public static function setPassword(string $password): void
+    public  function setPassword(string $password): void
     {
-        self::$password = $password;
+        $this->password = $password;
     }
 
-    public static function setAdresse(string $adresse): void
+    public  function setAdresse(string $adresse): void
     {
-        self::$adresse = $adresse;
+        $this->adresse = $adresse;
     }
 
-    public static function setTelephone(string $telephone): void
+    public  function setTelephone(string $telephone): void
     {
-        self::$telephone = $telephone;
+        $this->telephone = $telephone;
     }
 
-    public static function setRole(?Role $role): void
+    public  function setRole(?Role $role): void
     {
-        self::$role = $role;
+        $this->role = $role;
     }
 
     // Méthodes métiers
-    public static function isPassword(string $passwordValide): bool
+    public  function isPassword(string $passwordValide): bool
     {
-        return password_verify($passwordValide, self::$password);
+        return password_verify($passwordValide, $this->password);
     }
 
-    public static function hasRole(string $nomRole): bool
+    public  function hasRole(string $nomRole): bool
     {
-        return self::$role !== null && strtoupper(self::$role->getNom()) === strtoupper($nomRole);
+        return $this->role !== null && strtoupper($this->role->getNom()) === strtoupper($nomRole);
     }
 
-    public static function isAdmin(): bool
+    public  function isAdmin(): bool
     {
         return Utilisateur::hasRole('ADMIN');
     }
 
-    public static function isVendeur(): bool
+    public  function isVendeur(): bool
     {
         return Utilisateur::hasRole('VENTE') || Utilisateur::hasRole('VENDEUR');
     }
 
-    public static function isStock(): bool
+    public  function isStock(): bool
     {
         return Utilisateur::hasRole('STOCK');
     }
 
-    public static function isInventaire(): bool
+    public  function isInventaire(): bool
     {
         return Utilisateur::hasRole('INVENTAIRE');
     }

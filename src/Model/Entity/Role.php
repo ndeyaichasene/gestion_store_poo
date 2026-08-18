@@ -16,22 +16,22 @@ class Role
     // Getters
     public function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
     public function getNom(): string
     {
-        return self::$nom;
+        return $this->nom;
     }
 
     // Setters
     public function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
     public function setNom(string $nom): void
     {
-        self::$nom = $nom;
+        $this->nom = $nom;
     }
 }

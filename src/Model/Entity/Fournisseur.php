@@ -20,54 +20,54 @@ class Fournisseur
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getNom(): string
+    public  function getNom(): string
     {
-        return self::$nom;
+        return $this->nom;
     }
 
-    public static function getTelephone(): string
+    public  function getTelephone(): string
     {
-        return self::$telephone;
+        return $this->telephone;
     }
 
-    public static function getEmail(): string
+    public  function getEmail(): string
     {
-        return self::$email;
+        return $this->email;
     }
 
-    public static function getAdresse(): string
+    public  function getAdresse(): string
     {
-        return self::$adresse;
+        return $this->adresse;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
     public function setNom(string $nom): void
     {
-        self::$nom = $nom;
+        $this->nom = $nom;
     }
 
     public function setTelephone(string $telephone): void
     {
-        self::$telephone = $telephone;
+        $this->telephone = $telephone;
     }
 
     public function setEmail(string $email): void
     {
-        self::$email = $email;
+        $this->email = $email;
     }
 
     public function setAdresse(string $adresse): void
     {
-        self::$adresse = $adresse;
+        $this->adresse = $adresse;
     }
 }

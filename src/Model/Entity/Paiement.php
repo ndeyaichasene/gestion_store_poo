@@ -35,95 +35,95 @@ class Paiement
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getMontant(): float
+    public  function getMontant(): float
     {
-        return self::$montant;
+        return $this->montant;
     }
 
-    public static function getStatut(): string
+    public  function getStatut(): string
     {
-        return self::$statut;
+        return $this->statut;
     }
 
-    public static function getDatePaiement(): DateTime
+    public  function getDatePaiement(): DateTime
     {
-        return self::$date_paiement;
+        return $this->date_paiement;
     }
 
-    public static function getDette(): ?Dette
+    public  function getDette(): ?Dette
     {
-        return self::$dette;
+        return $this->dette;
     }
 
-    public static function getUtilisateur(): ?Utilisateur
+    public  function getUtilisateur(): ?Utilisateur
     {
-        return self::$utilisateur;
+        return $this->utilisateur;
     }
 
-    public static function getModePaiement(): ?ModePaiement
+    public  function getModePaiement(): ?ModePaiement
     {
-        return self::$mode_paiement;
+        return $this->mode_paiement;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setMontant(float $montant): void
+    public  function setMontant(float $montant): void
     {
-        self::$montant = max(0.0, $montant);
+        $this->montant = max(0.0, $montant);
     }
 
-    public static function setStatut(string $statut): void
+    public  function setStatut(string $statut): void
     {
-        self::$statut = $statut;
+        $this->statut = $statut;
     }
 
-    public static function setDatePaiement(DateTime $date_paiement): void
+    public  function setDatePaiement(DateTime $date_paiement): void
     {
-        self::$date_paiement = $date_paiement;
+        $this->date_paiement = $date_paiement;
     }
 
-    public static function setDette(?Dette $dette): void
+    public  function setDette(?Dette $dette): void
     {
-        self::$dette = $dette;
+        $this->dette = $dette;
     }
 
-    public static function setUtilisateur(?Utilisateur $utilisateur): void
+    public  function setUtilisateur(?Utilisateur $utilisateur): void
     {
-        self::$utilisateur = $utilisateur;
+        $this->utilisateur = $utilisateur;
     }
 
-    public static function setModePaiement(?ModePaiement $mode_paiement): void
+    public  function setModePaiement(?ModePaiement $mode_paiement): void
     {
-        self::$mode_paiement = $mode_paiement;
+        $this->mode_paiement = $mode_paiement;
     }
 
     // Méthodes métiers
-    public static function isValide(): bool
+    public  function isValide(): bool
     {
-        return self::$statut === 'VALIDE';
+        return $this->statut === 'VALIDE';
     }
 
-    public static function isAnnule(): bool
+    public  function isAnnule(): bool
     {
-        return self::$statut === 'ANNULE';
+        return $this->statut === 'ANNULE';
     }
 
-    public static function valider(): void
+    public  function valider(): void
     {
-        self::$statut = 'VALIDE';
+        $this->statut = 'VALIDE';
     }
 
-    public static function annuler(): void
+    public  function annuler(): void
     {
-        self::$statut = 'ANNULE';
+        $this->statut = 'ANNULE';
     }
 }

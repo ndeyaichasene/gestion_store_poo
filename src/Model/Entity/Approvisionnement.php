@@ -38,111 +38,111 @@ class Approvisionnement
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getReferenceBl(): string
+    public  function getReferenceBl(): string
     {
-        return self::$reference_bl;
+        return $this->reference_bl;
     }
 
-    public static function getMontantTotal(): float
+    public  function getMontantTotal(): float
     {
-        return self::$montant_total;
+        return $this->montant_total;
     }
 
-    public static function getStatut(): string
+    public  function getStatut(): string
     {
-        return self::$statut;
+        return $this->statut;
     }
 
-    public static function getDateAppro(): DateTime
+    public  function getDateAppro(): DateTime
     {
-        return self::$date_appro;
+        return $this->date_appro;
     }
 
-    public static function getDateReception(): ?DateTime
+    public  function getDateReception(): ?DateTime
     {
-        return self::$date_reception;
+        return $this->date_reception;
     }
 
-    public static function getFournisseur(): ?Fournisseur
+    public  function getFournisseur(): ?Fournisseur
     {
-        return self::$fournisseur;
+        return $this->fournisseur;
     }
 
-    public static function getUtilisateur(): ?Utilisateur
+    public  function getUtilisateur(): ?Utilisateur
     {
-        return self::$utilisateur;
+        return $this->utilisateur;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setReferenceBl(string $reference_bl): void
+    public  function setReferenceBl(string $reference_bl): void
     {
-        self::$reference_bl = $reference_bl;
+        $this->reference_bl = $reference_bl;
     }
 
-    public static function setMontantTotal(float $montant_total): void
+    public  function setMontantTotal(float $montant_total): void
     {
-        self::$montant_total = max(0.0, $montant_total);
+        $this->montant_total = max(0.0, $montant_total);
     }
 
-    public static function setStatut(string $statut): void
+    public  function setStatut(string $statut): void
     {
-        self::$statut = $statut;
+        $this->statut = $statut;
     }
 
-    public static function setDateAppro(DateTime $date_appro): void
+    public  function setDateAppro(DateTime $date_appro): void
     {
-        self::$date_appro = $date_appro;
+        $this->date_appro = $date_appro;
     }
 
-    public static function setDateReception(?DateTime $date_reception): void
+    public  function setDateReception(?DateTime $date_reception): void
     {
-        self::$date_reception = $date_reception;
+        $this->date_reception = $date_reception;
     }
 
-    public static function setFournisseur(?Fournisseur $fournisseur): void
+    public  function setFournisseur(?Fournisseur $fournisseur): void
     {
-        self::$fournisseur = $fournisseur;
+        $this->fournisseur = $fournisseur;
     }
 
-    public static function setUtilisateur(?Utilisateur $utilisateur): void
+    public  function setUtilisateur(?Utilisateur $utilisateur): void
     {
-        self::$utilisateur = $utilisateur;
+        $this->utilisateur = $utilisateur;
     }
 
     // Méthodes métiers
-    public static function isRecu(): bool
+    public  function isRecu(): bool
     {
-        return self::$statut === 'RECUE';
+        return $this->statut === 'RECUE';
     }
 
-    public static function isEnAttente(): bool
+    public  function isEnAttente(): bool
     {
-        return self::$statut === 'EN_ATTENTE';
+        return $this->statut === 'EN_ATTENTE';
     }
 
-    public static function isAnnule(): bool
+    public  function isAnnule(): bool
     {
-        return self::$statut === 'ANNULE';
+        return $this->statut === 'ANNULE';
     }
 
-    public static function validerReception(): void
+    public  function validerReception(): void
     {
-        self::$statut = 'RECUE';
-        self::$date_reception = new DateTime();
+        $this->statut = 'RECUE';
+        $this->date_reception = new DateTime();
     }
 
-    public static function annuler(): void
+    public  function annuler(): void
     {
-        self::$statut = 'ANNULE';
+        $this->statut = 'ANNULE';
     }
 }

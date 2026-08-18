@@ -28,59 +28,59 @@ class LigneVente
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getQuantite(): int
+    public  function getQuantite(): int
     {
-        return self::$quantite;
+        return $this->quantite;
     }
 
-    public static function getPrixUnitaire(): float
+    public  function getPrixUnitaire(): float
     {
-        return self::$prix_unitaire;
+        return $this->prix_unitaire;
     }
 
-    public static function getVente(): ?Vente
+    public  function getVente(): ?Vente
     {
-        return self::$vente;
+        return $this->vente;
     }
 
-    public static function getProduit(): ?Produit
+    public  function getProduit(): ?Produit
     {
-        return self::$produit;
+        return $this->produit;
     }
 
-    public static function getSousTotal(): float
+    public  function getSousTotal(): float
     {
-        return self::$quantite * self::$prix_unitaire;
+        return $this->quantite * $this->prix_unitaire;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setQuantite(int $quantite): void
+    public  function setQuantite(int $quantite): void
     {
-        self::$quantite = $quantite;
+        $this->quantite = $quantite;
     }
 
-    public static function setPrixUnitaire(float $prix_unitaire): void
+    public  function setPrixUnitaire(float $prix_unitaire): void
     {
-        self::$prix_unitaire = $prix_unitaire;
+        $this->prix_unitaire = $prix_unitaire;
     }
 
-    public static function setVente(?Vente $vente): void
+    public  function setVente(?Vente $vente): void
     {
-        self::$vente = $vente;
+        $this->vente = $vente;
     }
 
-    public static function setProduit(?Produit $produit): void
+    public  function setProduit(?Produit $produit): void
     {
-        self::$produit = $produit;
+        $this->produit = $produit;
     }
 }

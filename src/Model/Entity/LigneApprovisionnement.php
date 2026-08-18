@@ -34,94 +34,94 @@ class LigneApprovisionnement
     }
 
     // Getters
-    public static function getId(): int
+    public  function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getQuantiteAppro(): int
+    public  function getQuantiteAppro(): int
     {
-        return self::$quantite_appro;
+        return $this->quantite_appro;
     }
 
-    public static function getQuantiteRecue(): int
+    public  function getQuantiteRecue(): int
     {
-        return self::$quantite_recue;
+        return $this->quantite_recue;
     }
 
-    public static function getPrixAchat(): float
+    public  function getPrixAchat(): float
     {
-        return self::$prix_achat;
+        return $this->prix_achat;
     }
 
-    public static function getSousTotal(): float
+    public  function getSousTotal(): float
     {
-        return self::$sous_total;
+        return $this->sous_total;
     }
 
-    public static function getApprovisionnement(): ?Approvisionnement
+    public  function getApprovisionnement(): ?Approvisionnement
     {
-        return self::$approvisionnement;
+        return $this->approvisionnement;
     }
 
-    public static function getProduit(): ?Produit
+    public  function getProduit(): ?Produit
     {
-        return self::$produit;
+        return $this->produit;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public  function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setQuantiteAppro(int $quantite_appro): void
+    public  function setQuantiteAppro(int $quantite_appro): void
     {
-        self::$quantite_appro = max(0, $quantite_appro);
-        self::$sous_total = self::$quantite_appro * self::$prix_achat;
+        $this->quantite_appro = max(0, $quantite_appro);
+        $this->sous_total = $this->quantite_appro * $this->prix_achat;
     }
 
-    public static function setQuantiteRecue(int $quantite_recue): void
+    public  function setQuantiteRecue(int $quantite_recue): void
     {
-        self::$quantite_recue = max(0, $quantite_recue);
+        $this->quantite_recue = max(0, $quantite_recue);
     }
 
-    public static function setPrixAchat(float $prix_achat): void
+    public  function setPrixAchat(float $prix_achat): void
     {
-        self::$prix_achat = max(0.0, $prix_achat);
-        self::$sous_total = self::$quantite_appro * self::$prix_achat;
+        $this->prix_achat = max(0.0, $prix_achat);
+        $this->sous_total = $this->quantite_appro * $this->prix_achat;
     }
 
-    public static function setSousTotal(float $sous_total): void
+    public  function setSousTotal(float $sous_total): void
     {
-        self::$sous_total = max(0.0, $sous_total);
+        $this->sous_total = max(0.0, $sous_total);
     }
 
-    public static function setApprovisionnement(?Approvisionnement $approvisionnement): void
+    public  function setApprovisionnement(?Approvisionnement $approvisionnement): void
     {
-        self::$approvisionnement = $approvisionnement;
+        $this->approvisionnement = $approvisionnement;
     }
 
-    public static function setProduit(?Produit $produit): void
+    public  function setProduit(?Produit $produit): void
     {
-        self::$produit = $produit;
+        $this->produit = $produit;
     }
 
     // Méthodes métiers
-    public static function isTotalementRecue(): bool
+    public  function isTotalementRecue(): bool
     {
-        return self::$quantite_recue >= self::$quantite_appro && self::$quantite_appro > 0;
+        return $this->quantite_recue >= $this->quantite_appro && $this->quantite_appro > 0;
     }
 
-    public static function getQuantiteRestante(): int
+    public  function getQuantiteRestante(): int
     {
-        return max(0, self::$quantite_appro - self::$quantite_recue);
+        return max(0, $this->quantite_appro - $this->quantite_recue);
     }
 
-    public static function receptionner(int $quantite): void
+    public  function receptionner(int $quantite): void
     {
         if ($quantite > 0) {
-            self::$quantite_recue = min(self::$quantite_appro, self::$quantite_recue + $quantite);
+            $this->quantite_recue = min($this->quantite_appro, $this->quantite_recue + $quantite);
         }
     }
 }

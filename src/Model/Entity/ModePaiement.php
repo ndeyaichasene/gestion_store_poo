@@ -7,31 +7,31 @@ class ModePaiement
     private static string $nom;
 
     // Constructeur
-    private function __construct(int $id = 0, string $nom = "")
+    public function __construct(int $id = 0, string $nom = "")
     {
-        self::$id = $id;
-        self::$nom = $nom;
+        ModePaiement::$id = $id;
+        ModePaiement::$nom = $nom;
     }
 
     // Getters
-    public static function getId(): int
+    public function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getNom(): string
+    public function getNom(): string
     {
-        return self::$nom;
+        return $this->nom;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setNom(string $nom): void
+    public function setNom(string $nom): void
     {
-        self::$nom = $nom;
+        $this->nom = $nom;
     }
 }

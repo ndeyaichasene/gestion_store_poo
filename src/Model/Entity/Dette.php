@@ -16,7 +16,7 @@ class Dette
     private static ?Client $client;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         float $montant_initial = 0.0,
         float $montant_paye = 0.0,
@@ -39,105 +39,105 @@ class Dette
     }
 
     // Getters
-    public static function getId(): int
+    public function getId(): int
     {
-        return self::$id;
+        return $this->id;
     }
 
-    public static function getMontantInitial(): float
+    public function getMontantInitial(): float
     {
-        return self::$montant_initial;
+        return $this->montant_initial;
     }
 
-    public static function getMontantPaye(): float
+    public function getMontantPaye(): float
     {
-        return self::$montant_paye;
+        return $this->montant_paye;
     }
 
-    public static function getMontantRestant(): float
+    public function getMontantRestant(): float
     {
-        return self::$montant_restant;
+        return $this->montant_restant;
     }
 
-    public static function getStatut(): string
+    public function getStatut(): string
     {
-        return self::$statut;
+        return $this->statut;
     }
 
-    public static function getDateCreation(): DateTime
+    public function getDateCreation(): DateTime
     {
-        return self::$date_creation;
+        return $this->date_creation;
     }
 
-    public static function getVente(): ?Vente
+    public function getVente(): ?Vente
     {
-        return self::$vente;
+        return $this->vente;
     }
 
-    public static function getClient(): ?Client
+    public function getClient(): ?Client
     {
-        return self::$client;
+        return $this->client;
     }
 
     // Setters
-    public static function setId(int $id): void
+    public function setId(int $id): void
     {
-        self::$id = $id;
+        $this->id = $id;
     }
 
-    public static function setMontantInitial(float $montant_initial): void
+    public function setMontantInitial(float $montant_initial): void
     {
-        self::$montant_initial = max(0.0, $montant_initial);
+        $this->montant_initial = max(0.0, $montant_initial);
     }
 
-    public static function setMontantPaye(float $montant_paye): void
+    public function setMontantPaye(float $montant_paye): void
     {
-        self::$montant_paye = max(0.0, $montant_paye);
+        $this->montant_paye = max(0.0, $montant_paye);
     }
 
-    public static function setMontantRestant(float $montant_restant): void
+    public function setMontantRestant(float $montant_restant): void
     {
-        self::$montant_restant = max(0.0, $montant_restant);
+        $this->montant_restant = max(0.0, $montant_restant);
     }
 
-    public static function setStatut(string $statut): void
+    public function setStatut(string $statut): void
     {
-        self::$statut = $statut;
+        $this->statut = $statut;
     }
 
-    public static function setDateCreation(DateTime $date_creation): void
+    public function setDateCreation(DateTime $date_creation): void
     {
-        self::$date_creation = $date_creation;
+        $this->date_creation = $date_creation;
     }
 
-    public static function setVente(?Vente $vente): void
+    public function setVente(?Vente $vente): void
     {
-        self::$vente = $vente;
+        $this->vente = $vente;
     }
 
-    public static function setClient(?Client $client): void
+    public function setClient(?Client $client): void
     {
-        self::$client = $client;
+        $this->client = $client;
     }
 
     // Méthodes métiers
-    public static function isSoldee(): bool
+    public function isSoldee(): bool
     {
-        return self::$statut === 'SOLDEE' || self::$montant_restant <= 0;
+        return $this->statut === 'SOLDEE' || $this->montant_restant <= 0;
     }
 
-    public static function isEnCours(): bool
+    public function isEnCours(): bool
     {
-        return self::$statut === 'EN_COURS' && self::$montant_restant > 0;
+        return $this->statut === 'EN_COURS' && $this->montant_restant > 0;
     }
 
-    public static function enregistrerPaiement(float $montant): void
+    public function enregistrerPaiement(float $montant): void
     {
         if ($montant > 0) {
-            self::$montant_paye += $montant;
-            self::$montant_restant = max(0.0, self::$montant_initial - self::$montant_paye);
-            if (self::$montant_restant <= 0) {
-                self::$statut = 'SOLDEE';
+            $this->montant_paye += $montant;
+            $this->montant_restant = max(0.0, $this->montant_initial - $this->montant_paye);
+            if ($this->montant_restant <= 0) {
+                $this->statut = 'SOLDEE';
             }
         }
     }
