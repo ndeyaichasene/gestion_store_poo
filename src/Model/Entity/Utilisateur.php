@@ -5,17 +5,17 @@ require_once __DIR__ . "/Role.php";
 class Utilisateur
 {
     // Attributs
-    private int $id;
-    private string $nom;
-    private string $prenom;
-    private string $email;
-    private string $password;
-    private string $adresse;
-    private string $telephone;
-    private ?Role $role;
+    private static int $id;
+    private static string $nom;
+    private static string $prenom;
+    private static string $email;
+    private static string $password;
+    private static string $adresse;
+    private static string $telephone;
+    private static ?Role $role;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         string $nom = "",
         string $prenom = "",
         string $email = "",
@@ -25,131 +25,131 @@ class Utilisateur
         string $telephone = "",
         int $id = 0
     ) {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-        $this->adresse = $adresse;
-        $this->telephone = $telephone;
+        self::$id = $id;
+        self::$nom = $nom;
+        self::$prenom = $prenom;
+        self::$email = $email;
+        self::$password = $password;
+        self::$role = $role;
+        self::$adresse = $adresse;
+        self::$telephone = $telephone;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getNom(): string
+    public static function getNom(): string
     {
-        return $this->nom;
+        return self::$nom;
     }
 
-    public function getPrenom(): string
+    public static function getPrenom(): string
     {
-        return $this->prenom;
+        return self::$prenom;
     }
 
-    public function getNomComplet(): string
+    public static function getNomComplet(): string
     {
-        return trim($this->prenom . " " . $this->nom);
+        return trim(self::$prenom . " " . self::$nom);
     }
 
-    public function getEmail(): string
+    public static function getEmail(): string
     {
-        return $this->email;
+        return self::$email;
     }
 
-    public function getPassword(): string
+    public static function getPassword(): string
     {
-        return $this->password;
+        return self::$password;
     }
 
-    public function getAdresse(): string
+    public static function getAdresse(): string
     {
-        return $this->adresse;
+        return self::$adresse;
     }
 
-    public function getTelephone(): string
+    public static function getTelephone(): string
     {
-        return $this->telephone;
+        return self::$telephone;
     }
 
-    public function getRole(): ?Role
+    public static function getRole(): ?Role
     {
-        return $this->role;
+        return self::$role;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setNom(string $nom): void
+    public static function setNom(string $nom): void
     {
-        $this->nom = $nom;
+        self::$nom = $nom;
     }
 
-    public function setPrenom(string $prenom): void
+    public static function setPrenom(string $prenom): void
     {
-        $this->prenom = $prenom;
+        self::$prenom = $prenom;
     }
 
-    public function setEmail(string $email): void
+    public static function setEmail(string $email): void
     {
-        $this->email = $email;
+        self::$email = $email;
     }
 
-    public function setPassword(string $password): void
+    public static function setPassword(string $password): void
     {
-        $this->password = $password;
+        self::$password = $password;
     }
 
-    public function setAdresse(string $adresse): void
+    public static function setAdresse(string $adresse): void
     {
-        $this->adresse = $adresse;
+        self::$adresse = $adresse;
     }
 
-    public function setTelephone(string $telephone): void
+    public static function setTelephone(string $telephone): void
     {
-        $this->telephone = $telephone;
+        self::$telephone = $telephone;
     }
 
-    public function setRole(?Role $role): void
+    public static function setRole(?Role $role): void
     {
-        $this->role = $role;
+        self::$role = $role;
     }
 
     // Méthodes métiers
-    public function isPassword(string $passwordValide): bool
+    public static function isPassword(string $passwordValide): bool
     {
-        return password_verify($passwordValide, $this->password);
+        return password_verify($passwordValide, self::$password);
     }
 
-    public function hasRole(string $nomRole): bool
+    public static function hasRole(string $nomRole): bool
     {
-        return $this->role !== null && strtoupper($this->role->getNom()) === strtoupper($nomRole);
+        return self::$role !== null && strtoupper(self::$role->getNom()) === strtoupper($nomRole);
     }
 
-    public function isAdmin(): bool
+    public static function isAdmin(): bool
     {
-        return $this->hasRole('ADMIN');
+        return Utilisateur::hasRole('ADMIN');
     }
 
-    public function isVendeur(): bool
+    public static function isVendeur(): bool
     {
-        return $this->hasRole('VENTE') || $this->hasRole('VENDEUR');
+        return Utilisateur::hasRole('VENTE') || Utilisateur::hasRole('VENDEUR');
     }
 
-    public function isStock(): bool
+    public static function isStock(): bool
     {
-        return $this->hasRole('STOCK');
+        return Utilisateur::hasRole('STOCK');
     }
 
-    public function isInventaire(): bool
+    public static function isInventaire(): bool
     {
-        return $this->hasRole('INVENTAIRE');
+        return Utilisateur::hasRole('INVENTAIRE');
     }
 }

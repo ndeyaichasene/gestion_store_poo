@@ -6,18 +6,18 @@ require_once __DIR__ . "/Utilisateur.php";
 class Vente
 {
     // Attributs
-    private int $id;
-    private string $reference;
-    private float $montant_total;
-    private float $montant_verse;
-    private string $statut;
-    private DateTime $date_creation;
+    private static int $id;
+    private static string $reference;
+    private static float $montant_total;
+    private static float $montant_verse;
+    private static string $statut;
+    private static DateTime $date_creation;
 
-    private ?Client $client;
-    private ?Utilisateur $utilisateur;
+    private static ?Client $client;
+    private static ?Utilisateur $utilisateur;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         string $reference = "",
         float $montant_total = 0.0,
@@ -27,129 +27,129 @@ class Vente
         ?Client $client = null,
         ?Utilisateur $utilisateur = null
     ) {
-        $this->id = $id;
-        $this->reference = $reference;
-        $this->montant_total = $montant_total;
-        $this->montant_verse = $montant_verse;
-        $this->date_creation = $date_creation ?? new DateTime();
-        $this->client = $client;
-        $this->utilisateur = $utilisateur;
-        $this->statut = !empty($statut) ? $statut : $this->determinerStatut();
+        self::$id = $id;
+        self::$reference = $reference;
+        self::$montant_total = $montant_total;
+        self::$montant_verse = $montant_verse;
+        self::$date_creation = $date_creation ?? new DateTime();
+        self::$client = $client;
+        self::$utilisateur = $utilisateur;
+        self::$statut = !empty($statut) ? $statut : self::determinerStatut();
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getReference(): string
+    public static function getReference(): string
     {
-        return $this->reference;
+        return self::$reference;
     }
 
-    public function getMontantTotal(): float
+    public static function getMontantTotal(): float
     {
-        return $this->montant_total;
+        return self::$montant_total;
     }
 
-    public function getMontantVerse(): float
+    public static function getMontantVerse(): float
     {
-        return $this->montant_verse;
+        return self::$montant_verse;
     }
 
-    public function getStatut(): string
+    public static function getStatut(): string
     {
-        return $this->statut;
+        return self::$statut;
     }
 
-    public function getDateCreation(): DateTime
+    public static function getDateCreation(): DateTime
     {
-        return $this->date_creation;
+        return self::$date_creation;
     }
 
-    public function getClient(): ?Client
+    public static function getClient(): ?Client
     {
-        return $this->client;
+        return self::$client;
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public static function getUtilisateur(): ?Utilisateur
     {
-        return $this->utilisateur;
+        return self::$utilisateur;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setReference(string $reference): void
+    public static function setReference(string $reference): void
     {
-        $this->reference = $reference;
+        self::$reference = $reference;
     }
 
-    public function setMontantTotal(float $montant_total): void
+    public static function setMontantTotal(float $montant_total): void
     {
-        $this->montant_total = max(0.0, $montant_total);
+        self::$montant_total = max(0.0, $montant_total);
     }
 
-    public function setMontantVerse(float $montant_verse): void
+    public static function setMontantVerse(float $montant_verse): void
     {
-        $this->montant_verse = max(0.0, $montant_verse);
+        self::$montant_verse = max(0.0, $montant_verse);
     }
 
-    public function setStatut(string $statut): void
+    public static function setStatut(string $statut): void
     {
-        $this->statut = $statut;
+        self::$statut = $statut;
     }
 
-    public function setDateCreation(DateTime $date_creation): void
+    public static function setDateCreation(DateTime $date_creation): void
     {
-        $this->date_creation = $date_creation;
+        self::$date_creation = $date_creation;
     }
 
-    public function setClient(?Client $client): void
+    public static function setClient(?Client $client): void
     {
-        $this->client = $client;
+        self::$client = $client;
     }
 
-    public function setUtilisateur(?Utilisateur $utilisateur): void
+    public static function setUtilisateur(?Utilisateur $utilisateur): void
     {
-        $this->utilisateur = $utilisateur;
+        self::$utilisateur = $utilisateur;
     }
 
     // Méthodes métiers
-    public function getMontantRestant(): float
+    public static function getMontantRestant(): float
     {
-        return max(0.0, $this->montant_total - $this->montant_verse);
+        return max(0.0, self::$montant_total - self::$montant_verse);
     }
 
-    public function isSoldee(): bool
+    public static function isSoldee(): bool
     {
-        return $this->montant_verse >= $this->montant_total;
+        return self::$montant_verse >= self::$montant_total;
     }
 
-    public function isCredit(): bool
+    public static function isCredit(): bool
     {
-        return $this->montant_verse < $this->montant_total;
+        return self::$montant_verse < self::$montant_total;
     }
 
-    public function determinerStatut(): string
+    public static function determinerStatut(): string
     {
-        if ($this->montant_verse >= $this->montant_total && $this->montant_total > 0) {
+        if (self::$montant_verse >= self::$montant_total && self::$montant_total > 0) {
             return 'COMPTANT';
-        } elseif ($this->montant_verse > 0) {
+        } elseif (self::$montant_verse > 0) {
             return 'AVANCE';
         }
         return 'CREDIT_TOTAL';
     }
 
-    public function ajouterVersement(float $montant): void
+    public static function ajouterVersement(float $montant): void
     {
         if ($montant > 0) {
-            $this->montant_verse += $montant;
-            $this->statut = $this->determinerStatut();
+            self::$montant_verse += $montant;
+            self::$statut = Vente::determinerStatut();
         }
     }
 }

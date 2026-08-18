@@ -5,18 +5,18 @@ require_once __DIR__ . "/Fournisseur.php";
 class Produit
 {
     // Attributs
-    private int $id;
-    private string $code;
-    private string $libelle;
-    private string $categorie;
-    private float $prix_achat;
-    private float $prix_vente;
-    private int $qte_stock;
-    private int $seuil_alerte;
-    private ?Fournisseur $fournisseur;
+    private static int $id;
+    private static string $code;
+    private static string $libelle;
+    private static string $categorie;
+    private static float $prix_achat;
+    private static float $prix_vente;
+    private static int $qte_stock;
+    private static int $seuil_alerte;
+    private static ?Fournisseur $fournisseur;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         string $code = "",
         string $libelle = "",
@@ -27,148 +27,148 @@ class Produit
         int $seuil_alerte = 10,
         ?Fournisseur $fournisseur = null
     ) {
-        $this->id = $id;
-        $this->code = $code;
-        $this->libelle = $libelle;
-        $this->categorie = $categorie;
-        $this->prix_achat = $prix_achat;
-        $this->prix_vente = $prix_vente;
-        $this->qte_stock = $qte_stock;
-        $this->seuil_alerte = $seuil_alerte;
-        $this->fournisseur = $fournisseur;
+        self::$id = $id;
+        self::$code = $code;
+        self::$libelle = $libelle;
+        self::$categorie = $categorie;
+        self::$prix_achat = $prix_achat;
+        self::$prix_vente = $prix_vente;
+        self::$qte_stock = $qte_stock;
+        self::$seuil_alerte = $seuil_alerte;
+        self::$fournisseur = $fournisseur;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getCode(): string
+    public static function getCode(): string
     {
-        return $this->code;
+        return self::$code;
     }
 
-    public function getLibelle(): string
+    public static function getLibelle(): string
     {
-        return $this->libelle;
+        return self::$libelle;
     }
 
-    public function getCategorie(): string
+    public static function getCategorie(): string
     {
-        return $this->categorie;
+        return self::$categorie;
     }
 
-    public function getPrixAchat(): float
+    public static function getPrixAchat(): float
     {
-        return $this->prix_achat;
+        return self::$prix_achat;
     }
 
-    public function getPrixVente(): float
+    public static function getPrixVente(): float
     {
-        return $this->prix_vente;
+        return self::$prix_vente;
     }
 
-    public function getQteStock(): int
+    public static function getQteStock(): int
     {
-        return $this->qte_stock;
+        return self::$qte_stock;
     }
 
-    public function getSeuilAlerte(): int
+    public static function getSeuilAlerte(): int
     {
-        return $this->seuil_alerte;
+        return self::$seuil_alerte;
     }
 
-    public function getFournisseur(): ?Fournisseur
+    public static function getFournisseur(): ?Fournisseur
     {
-        return $this->fournisseur;
+        return self::$fournisseur;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setCode(string $code): void
+    public static function setCode(string $code): void
     {
-        $this->code = $code;
+        self::$code = $code;
     }
 
-    public function setLibelle(string $libelle): void
+    public static function setLibelle(string $libelle): void
     {
-        $this->libelle = $libelle;
+        self::$libelle = $libelle;
     }
 
-    public function setCategorie(string $categorie): void
+    public static function setCategorie(string $categorie): void
     {
-        $this->categorie = $categorie;
+        self::$categorie = $categorie;
     }
 
-    public function setPrixAchat(float $prix_achat): void
+    public static function setPrixAchat(float $prix_achat): void
     {
-        $this->prix_achat = max(0.0, $prix_achat);
+        self::$prix_achat = max(0.0, $prix_achat);
     }
 
-    public function setPrixVente(float $prix_vente): void
+    public static function setPrixVente(float $prix_vente): void
     {
-        $this->prix_vente = max(0.0, $prix_vente);
+        self::$prix_vente = max(0.0, $prix_vente);
     }
 
-    public function setQteStock(int $qte_stock): void
+    public static function setQteStock(int $qte_stock): void
     {
-        $this->qte_stock = max(0, $qte_stock);
+        self::$qte_stock = max(0, $qte_stock);
     }
 
-    public function setSeuilAlerte(int $seuil_alerte): void
+    public static function setSeuilAlerte(int $seuil_alerte): void
     {
-        $this->seuil_alerte = max(0, $seuil_alerte);
+        self::$seuil_alerte = max(0, $seuil_alerte);
     }
 
-    public function setFournisseur(?Fournisseur $fournisseur): void
+    public static function setFournisseur(?Fournisseur $fournisseur): void
     {
-        $this->fournisseur = $fournisseur;
+        self::$fournisseur = $fournisseur;
     }
 
     // Méthodes métiers
-    public function isStockCritique(): bool
+    public static function isStockCritique(): bool
     {
-        return $this->qte_stock <= $this->seuil_alerte;
+        return self::$qte_stock <= self::$seuil_alerte;
     }
 
-    public function isEnRupture(): bool
+    public static function isEnRupture(): bool
     {
-        return $this->qte_stock <= 0;
+        return self::$qte_stock <= 0;
     }
 
-    public function isDisponible(int $quantite): bool
+    public static function isDisponible(int $quantite): bool
     {
-        return $quantite > 0 && $this->qte_stock >= $quantite;
+        return $quantite > 0 && self::$qte_stock >= $quantite;
     }
 
-    public function diminuerStock(int $quantite): bool
+    public static function diminuerStock(int $quantite): bool
     {
-        if ($this->isDisponible($quantite)) {
-            $this->qte_stock -= $quantite;
+        if (Produit::isDisponible($quantite)) {
+            self::$qte_stock -= $quantite;
             return true;
         }
         return false;
     }
 
-    public function augmenterStock(int $quantite): void
+    public static function augmenterStock(int $quantite): void
     {
         if ($quantite > 0) {
-            $this->qte_stock += $quantite;
+            self::$qte_stock += $quantite;
         }
     }
 
-    public function getMargeUnitaire(): float
+    public static function getMargeUnitaire(): float
     {
-        return $this->prix_vente - $this->prix_achat;
+        return self::$prix_vente - self::$prix_achat;
     }
 
-    public function getValeurStock(): float
+    public static function getValeurStock(): float
     {
-        return $this->qte_stock * $this->prix_achat;
+        return self::$qte_stock * self::$prix_achat;
     }
 }

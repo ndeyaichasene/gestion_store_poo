@@ -3,71 +3,71 @@
 class Fournisseur
 {
     // Attributs
-    private int $id;
-    private string $nom;
-    private string $telephone;
-    private string $email;
-    private string $adresse;
+    private static int $id;
+    private static string $nom;
+    private static string $telephone;
+    private static string $email;
+    private static string $adresse;
 
     // Constructeur
-    public function __construct( int $id = 0, string $nom = "", string $telephone = "", string $email = "", string $adresse = "")
+    private function __construct( int $id = 0, string $nom = "", string $telephone = "", string $email = "", string $adresse = "")
      {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->telephone = $telephone;
-        $this->email = $email;
-        $this->adresse = $adresse;
+        Fournisseur::$id = $id;
+        Fournisseur::$nom = $nom;
+        Fournisseur::$telephone = $telephone;
+        Fournisseur::$email = $email;
+        Fournisseur::$adresse = $adresse;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getNom(): string
+    public static function getNom(): string
     {
-        return $this->nom;
+        return self::$nom;
     }
 
-    public function getTelephone(): string
+    public static function getTelephone(): string
     {
-        return $this->telephone;
+        return self::$telephone;
     }
 
-    public function getEmail(): string
+    public static function getEmail(): string
     {
-        return $this->email;
+        return self::$email;
     }
 
-    public function getAdresse(): string
+    public static function getAdresse(): string
     {
-        return $this->adresse;
+        return self::$adresse;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
     public function setNom(string $nom): void
     {
-        $this->nom = $nom;
+        self::$nom = $nom;
     }
 
     public function setTelephone(string $telephone): void
     {
-        $this->telephone = $telephone;
+        self::$telephone = $telephone;
     }
 
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        self::$email = $email;
     }
 
     public function setAdresse(string $adresse): void
     {
-        $this->adresse = $adresse;
+        self::$adresse = $adresse;
     }
 }

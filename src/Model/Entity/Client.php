@@ -3,16 +3,16 @@
 class Client
 {
     // Attributs
-    private int $id;
-    private string $nom;
-    private string $prenom;
-    private string $telephone;
-    private string $adresse;
-    private float $solde_dette;
-    private float $limite_credit;
+    private static int $id;
+    private static string $nom;
+    private static string $prenom;
+    private static string $telephone;
+    private static string $adresse;
+    private static float $solde_dette;
+    private static float $limite_credit;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         string $nom = "",
         string $prenom = "",
@@ -21,127 +21,127 @@ class Client
         float $solde_dette = 0.0,
         float $limite_credit = 0.0
     ) {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->telephone = $telephone;
-        $this->adresse = $adresse;
-        $this->solde_dette = $solde_dette;
-        $this->limite_credit = $limite_credit;
+        self::$id = $id;
+        self::$nom = $nom;
+        self::$prenom = $prenom;
+        self::$telephone = $telephone;
+        self::$adresse = $adresse;
+        self::$solde_dette = $solde_dette;
+        self::$limite_credit = $limite_credit;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getNom(): string
+    public static function getNom(): string
     {
-        return $this->nom;
+        return self::$nom;
     }
 
-    public function getPrenom(): string
+    public static function getPrenom(): string
     {
-        return $this->prenom;
+        return self::$prenom;
     }
 
-    public function getNomComplet(): string
+    public static function getNomComplet(): string
     {
-        return trim($this->prenom . " " . $this->nom);
+        return trim(self::$prenom . " " . self::$nom);
     }
 
-    public function getTelephone(): string
+    public static function getTelephone(): string
     {
-        return $this->telephone;
+        return self::$telephone;
     }
 
-    public function getAdresse(): string
+    public static function getAdresse(): string
     {
-        return $this->adresse;
+        return self::$adresse;
     }
 
-    public function getSoldeDette(): float
+    public static function getSoldeDette(): float
     {
-        return $this->solde_dette;
+        return self::$solde_dette;
     }
 
     public function getLimiteCredit(): float
     {
-        return $this->limite_credit;
+        return self::$limite_credit;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setNom(string $nom): void
+    public static function setNom(string $nom): void
     {
-        $this->nom = $nom;
+        self::$nom = $nom;
     }
 
-    public function setPrenom(string $prenom): void
+    public static function setPrenom(string $prenom): void
     {
-        $this->prenom = $prenom;
+        self::$prenom = $prenom;
     }
 
-    public function setTelephone(string $telephone): void
+    public static function setTelephone(string $telephone): void
     {
-        $this->telephone = $telephone;
+        self::$telephone = $telephone;
     }
 
-    public function setAdresse(string $adresse): void
+    public static function setAdresse(string $adresse): void
     {
-        $this->adresse = $adresse;
+        self::$adresse = $adresse;
     }
 
-    public function setSoldeDette(float $solde_dette): void
+    public static function setSoldeDette(float $solde_dette): void
     {
-        $this->solde_dette = max(0.0, $solde_dette);
+        self::$solde_dette = max(0.0, $solde_dette);
     }
 
-    public function setLimiteCredit(float $limite_credit): void
+    public static function setLimiteCredit(float $limite_credit): void
     {
-        $this->limite_credit = max(0.0, $limite_credit);
+        self::$limite_credit = max(0.0, $limite_credit);
     }
 
     // Méthodes métiers
-    public function getCreditDisponible(): float
+    public static function getCreditDisponible(): float
     {
-        return max(0.0, $this->limite_credit - $this->solde_dette);
+        return max(0.0, self::$limite_credit - self::$solde_dette);
     }
 
-    public function peutPrendreCredit(float $montant): bool
+    public static function peutPrendreCredit(float $montant): bool
     {
         if ($montant <= 0) {
             return true;
         }
-        return ($this->solde_dette + $montant) <= $this->limite_credit;
+        return (self::$solde_dette + $montant) <= self::$limite_credit;
     }
 
-    public function ajouterDette(float $montant): void
+    public static function ajouterDette(float $montant): void
     {
         if ($montant > 0) {
-            $this->solde_dette += $montant;
+            self::$solde_dette += $montant;
         }
     }
 
-    public function diminuerDette(float $montant): void
+    public static function diminuerDette(float $montant): void
     {
         if ($montant > 0) {
-            $this->solde_dette = max(0.0, $this->solde_dette - $montant);
+            self::$solde_dette = max(0.0, self::$solde_dette - $montant);
         }
     }
 
-    public function hasDette(): bool
+    public static function hasDette(): bool
     {
-        return $this->solde_dette > 0;
+        return self::$solde_dette > 0;
     }
 
-    public function isLimiteAtteinte(): bool
+    public static function isLimiteAtteinte(): bool
     {
-        return $this->limite_credit > 0 && $this->solde_dette >= $this->limite_credit;
+        return self::$limite_credit > 0 && self::$solde_dette >= self::$limite_credit;
     }
 }

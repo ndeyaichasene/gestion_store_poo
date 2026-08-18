@@ -6,16 +6,16 @@ require_once __DIR__ . "/Produit.php";
 class LigneApprovisionnement
 {
     // Attributs
-    private int $id;
-    private int $quantite_appro;
-    private int $quantite_recue;
-    private float $prix_achat;
-    private float $sous_total;
-    private ?Approvisionnement $approvisionnement;
-    private ?Produit $produit;
+    private static int $id;
+    private static int $quantite_appro;
+    private static int $quantite_recue;
+    private static float $prix_achat;
+    private static float $sous_total;
+    private static ?Approvisionnement $approvisionnement;
+    private static ?Produit $produit;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         int $quantite_appro = 0,
         int $quantite_recue = 0,
@@ -24,104 +24,104 @@ class LigneApprovisionnement
         ?Approvisionnement $approvisionnement = null,
         ?Produit $produit = null
     ) {
-        $this->id = $id;
-        $this->quantite_appro = $quantite_appro;
-        $this->quantite_recue = $quantite_recue;
-        $this->prix_achat = $prix_achat;
-        $this->sous_total = ($sous_total > 0.0) ? $sous_total : ($quantite_appro * $prix_achat);
-        $this->approvisionnement = $approvisionnement;
-        $this->produit = $produit;
+        self::$id = $id;
+        self::$quantite_appro = $quantite_appro;
+        self::$quantite_recue = $quantite_recue;
+        self::$prix_achat = $prix_achat;
+        self::$sous_total = ($sous_total > 0.0) ? $sous_total : ($quantite_appro * $prix_achat);
+        self::$approvisionnement = $approvisionnement;
+        self::$produit = $produit;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getQuantiteAppro(): int
+    public static function getQuantiteAppro(): int
     {
-        return $this->quantite_appro;
+        return self::$quantite_appro;
     }
 
-    public function getQuantiteRecue(): int
+    public static function getQuantiteRecue(): int
     {
-        return $this->quantite_recue;
+        return self::$quantite_recue;
     }
 
-    public function getPrixAchat(): float
+    public static function getPrixAchat(): float
     {
-        return $this->prix_achat;
+        return self::$prix_achat;
     }
 
-    public function getSousTotal(): float
+    public static function getSousTotal(): float
     {
-        return $this->sous_total;
+        return self::$sous_total;
     }
 
-    public function getApprovisionnement(): ?Approvisionnement
+    public static function getApprovisionnement(): ?Approvisionnement
     {
-        return $this->approvisionnement;
+        return self::$approvisionnement;
     }
 
-    public function getProduit(): ?Produit
+    public static function getProduit(): ?Produit
     {
-        return $this->produit;
+        return self::$produit;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setQuantiteAppro(int $quantite_appro): void
+    public static function setQuantiteAppro(int $quantite_appro): void
     {
-        $this->quantite_appro = max(0, $quantite_appro);
-        $this->sous_total = $this->quantite_appro * $this->prix_achat;
+        self::$quantite_appro = max(0, $quantite_appro);
+        self::$sous_total = self::$quantite_appro * self::$prix_achat;
     }
 
-    public function setQuantiteRecue(int $quantite_recue): void
+    public static function setQuantiteRecue(int $quantite_recue): void
     {
-        $this->quantite_recue = max(0, $quantite_recue);
+        self::$quantite_recue = max(0, $quantite_recue);
     }
 
-    public function setPrixAchat(float $prix_achat): void
+    public static function setPrixAchat(float $prix_achat): void
     {
-        $this->prix_achat = max(0.0, $prix_achat);
-        $this->sous_total = $this->quantite_appro * $this->prix_achat;
+        self::$prix_achat = max(0.0, $prix_achat);
+        self::$sous_total = self::$quantite_appro * self::$prix_achat;
     }
 
-    public function setSousTotal(float $sous_total): void
+    public static function setSousTotal(float $sous_total): void
     {
-        $this->sous_total = max(0.0, $sous_total);
+        self::$sous_total = max(0.0, $sous_total);
     }
 
-    public function setApprovisionnement(?Approvisionnement $approvisionnement): void
+    public static function setApprovisionnement(?Approvisionnement $approvisionnement): void
     {
-        $this->approvisionnement = $approvisionnement;
+        self::$approvisionnement = $approvisionnement;
     }
 
-    public function setProduit(?Produit $produit): void
+    public static function setProduit(?Produit $produit): void
     {
-        $this->produit = $produit;
+        self::$produit = $produit;
     }
 
     // Méthodes métiers
-    public function isTotalementRecue(): bool
+    public static function isTotalementRecue(): bool
     {
-        return $this->quantite_recue >= $this->quantite_appro && $this->quantite_appro > 0;
+        return self::$quantite_recue >= self::$quantite_appro && self::$quantite_appro > 0;
     }
 
-    public function getQuantiteRestante(): int
+    public static function getQuantiteRestante(): int
     {
-        return max(0, $this->quantite_appro - $this->quantite_recue);
+        return max(0, self::$quantite_appro - self::$quantite_recue);
     }
 
-    public function receptionner(int $quantite): void
+    public static function receptionner(int $quantite): void
     {
         if ($quantite > 0) {
-            $this->quantite_recue = min($this->quantite_appro, $this->quantite_recue + $quantite);
+            self::$quantite_recue = min(self::$quantite_appro, self::$quantite_recue + $quantite);
         }
     }
 }

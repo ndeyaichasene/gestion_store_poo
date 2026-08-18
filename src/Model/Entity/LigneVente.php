@@ -6,81 +6,81 @@ require_once __DIR__ . "/Vente.php";
 class LigneVente
 {
     // Attributs
-    private int $id;
-    private int $quantite;
-    private float $prix_unitaire;
-    private ?Vente $vente;
-    private ?Produit $produit;
+    private static int $id;
+    private static int $quantite;
+    private static float $prix_unitaire;
+    private static ?Vente $vente;
+    private static ?Produit $produit;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         int $quantite = 0,
         float $prix_unitaire = 0.0,
         ?Vente $vente = null,
         ?Produit $produit = null
     ) {
-        $this->id = $id;
-        $this->quantite = $quantite;
-        $this->prix_unitaire = $prix_unitaire;
-        $this->vente = $vente;
-        $this->produit = $produit;
+        self::$id = $id;
+        self::$quantite = $quantite;
+        self::$prix_unitaire = $prix_unitaire;
+        self::$vente = $vente;
+        self::$produit = $produit;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getQuantite(): int
+    public static function getQuantite(): int
     {
-        return $this->quantite;
+        return self::$quantite;
     }
 
-    public function getPrixUnitaire(): float
+    public static function getPrixUnitaire(): float
     {
-        return $this->prix_unitaire;
+        return self::$prix_unitaire;
     }
 
-    public function getVente(): ?Vente
+    public static function getVente(): ?Vente
     {
-        return $this->vente;
+        return self::$vente;
     }
 
-    public function getProduit(): ?Produit
+    public static function getProduit(): ?Produit
     {
-        return $this->produit;
+        return self::$produit;
     }
 
-    public function getSousTotal(): float
+    public static function getSousTotal(): float
     {
-        return $this->quantite * $this->prix_unitaire;
+        return self::$quantite * self::$prix_unitaire;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setQuantite(int $quantite): void
+    public static function setQuantite(int $quantite): void
     {
-        $this->quantite = $quantite;
+        self::$quantite = $quantite;
     }
 
-    public function setPrixUnitaire(float $prix_unitaire): void
+    public static function setPrixUnitaire(float $prix_unitaire): void
     {
-        $this->prix_unitaire = $prix_unitaire;
+        self::$prix_unitaire = $prix_unitaire;
     }
 
-    public function setVente(?Vente $vente): void
+    public static function setVente(?Vente $vente): void
     {
-        $this->vente = $vente;
+        self::$vente = $vente;
     }
 
-    public function setProduit(?Produit $produit): void
+    public static function setProduit(?Produit $produit): void
     {
-        $this->produit = $produit;
+        self::$produit = $produit;
     }
 }

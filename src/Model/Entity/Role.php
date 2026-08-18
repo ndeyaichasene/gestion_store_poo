@@ -3,35 +3,35 @@
 class Role
 {
     // Attributs
-    private int $id;
-    private string $nom;
+    private static int $id;
+    private static string $nom;
 
     // Constructeur
-    public function __construct(int $id = 0, string $nom = "")
+    private function __construct(int $id = 0, string $nom = "")
     {
-        $this->id = $id;
-        $this->nom = $nom;
+        self::$id = $id;
+        self::$nom = $nom;
     }
 
     // Getters
     public function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
     public function getNom(): string
     {
-        return $this->nom;
+        return self::$nom;
     }
 
     // Setters
     public function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
     public function setNom(string $nom): void
     {
-        $this->nom = $nom;
+        self::$nom = $nom;
     }
 }

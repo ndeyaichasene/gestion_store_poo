@@ -6,18 +6,18 @@ require_once __DIR__ . "/Utilisateur.php";
 class Approvisionnement
 {
     // Attributs
-    private int $id;
-    private string $reference_bl;
-    private float $montant_total;
-    private string $statut;
-    private DateTime $date_appro;
-    private ?DateTime $date_reception;
+    private static int $id;
+    private static string $reference_bl;
+    private static float $montant_total;
+    private static string $statut;
+    private static DateTime $date_appro;
+    private static ?DateTime $date_reception;
 
-    private ?Fournisseur $fournisseur;
-    private ?Utilisateur $utilisateur;
+    private static ?Fournisseur $fournisseur;
+    private static ?Utilisateur $utilisateur;
 
     // Constructeur
-    public function __construct(
+    private function __construct(
         int $id = 0,
         string $reference_bl = "",
         float $montant_total = 0.0,
@@ -27,122 +27,122 @@ class Approvisionnement
         ?Fournisseur $fournisseur = null,
         ?Utilisateur $utilisateur = null
     ) {
-        $this->id = $id;
-        $this->reference_bl = $reference_bl;
-        $this->montant_total = $montant_total;
-        $this->statut = !empty($statut) ? $statut : "EN_ATTENTE";
-        $this->date_appro = $date_appro ?? new DateTime();
-        $this->date_reception = $date_reception;
-        $this->fournisseur = $fournisseur;
-        $this->utilisateur = $utilisateur;
+        self::$id = $id;
+        self::$reference_bl = $reference_bl;
+        self::$montant_total = $montant_total;
+        self::$statut = !empty($statut) ? $statut : "EN_ATTENTE";
+        self::$date_appro = $date_appro ?? new DateTime();
+        self::$date_reception = $date_reception;
+        self::$fournisseur = $fournisseur;
+        self::$utilisateur = $utilisateur;
     }
 
     // Getters
-    public function getId(): int
+    public static function getId(): int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getReferenceBl(): string
+    public static function getReferenceBl(): string
     {
-        return $this->reference_bl;
+        return self::$reference_bl;
     }
 
-    public function getMontantTotal(): float
+    public static function getMontantTotal(): float
     {
-        return $this->montant_total;
+        return self::$montant_total;
     }
 
-    public function getStatut(): string
+    public static function getStatut(): string
     {
-        return $this->statut;
+        return self::$statut;
     }
 
-    public function getDateAppro(): DateTime
+    public static function getDateAppro(): DateTime
     {
-        return $this->date_appro;
+        return self::$date_appro;
     }
 
-    public function getDateReception(): ?DateTime
+    public static function getDateReception(): ?DateTime
     {
-        return $this->date_reception;
+        return self::$date_reception;
     }
 
-    public function getFournisseur(): ?Fournisseur
+    public static function getFournisseur(): ?Fournisseur
     {
-        return $this->fournisseur;
+        return self::$fournisseur;
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public static function getUtilisateur(): ?Utilisateur
     {
-        return $this->utilisateur;
+        return self::$utilisateur;
     }
 
     // Setters
-    public function setId(int $id): void
+    public static function setId(int $id): void
     {
-        $this->id = $id;
+        self::$id = $id;
     }
 
-    public function setReferenceBl(string $reference_bl): void
+    public static function setReferenceBl(string $reference_bl): void
     {
-        $this->reference_bl = $reference_bl;
+        self::$reference_bl = $reference_bl;
     }
 
-    public function setMontantTotal(float $montant_total): void
+    public static function setMontantTotal(float $montant_total): void
     {
-        $this->montant_total = max(0.0, $montant_total);
+        self::$montant_total = max(0.0, $montant_total);
     }
 
-    public function setStatut(string $statut): void
+    public static function setStatut(string $statut): void
     {
-        $this->statut = $statut;
+        self::$statut = $statut;
     }
 
-    public function setDateAppro(DateTime $date_appro): void
+    public static function setDateAppro(DateTime $date_appro): void
     {
-        $this->date_appro = $date_appro;
+        self::$date_appro = $date_appro;
     }
 
-    public function setDateReception(?DateTime $date_reception): void
+    public static function setDateReception(?DateTime $date_reception): void
     {
-        $this->date_reception = $date_reception;
+        self::$date_reception = $date_reception;
     }
 
-    public function setFournisseur(?Fournisseur $fournisseur): void
+    public static function setFournisseur(?Fournisseur $fournisseur): void
     {
-        $this->fournisseur = $fournisseur;
+        self::$fournisseur = $fournisseur;
     }
 
-    public function setUtilisateur(?Utilisateur $utilisateur): void
+    public static function setUtilisateur(?Utilisateur $utilisateur): void
     {
-        $this->utilisateur = $utilisateur;
+        self::$utilisateur = $utilisateur;
     }
 
     // Méthodes métiers
-    public function isRecu(): bool
+    public static function isRecu(): bool
     {
-        return $this->statut === 'RECUE';
+        return self::$statut === 'RECUE';
     }
 
-    public function isEnAttente(): bool
+    public static function isEnAttente(): bool
     {
-        return $this->statut === 'EN_ATTENTE';
+        return self::$statut === 'EN_ATTENTE';
     }
 
-    public function isAnnule(): bool
+    public static function isAnnule(): bool
     {
-        return $this->statut === 'ANNULE';
+        return self::$statut === 'ANNULE';
     }
 
-    public function validerReception(): void
+    public static function validerReception(): void
     {
-        $this->statut = 'RECUE';
-        $this->date_reception = new DateTime();
+        self::$statut = 'RECUE';
+        self::$date_reception = new DateTime();
     }
 
-    public function annuler(): void
+    public static function annuler(): void
     {
-        $this->statut = 'ANNULE';
+        self::$statut = 'ANNULE';
     }
 }
