@@ -3,13 +3,13 @@
 class Client
 {
     // Attributs
-    private static int $id;
-    private static string $nom;
-    private static string $prenom;
-    private static string $telephone;
-    private static string $adresse;
-    private static float $solde_dette;
-    private static float $limite_credit;
+    private  int $id;
+    private  string $nom;
+    private  string $prenom;
+    private  string $telephone;
+    private  string $adresse;
+    private  float $solde_dette;
+    private  float $limite_credit;
 
     // Constructeur
     public function __construct(
@@ -21,13 +21,13 @@ class Client
         float $solde_dette = 0.0,
         float $limite_credit = 0.0
     ) {
-        self::$id = $id;
-        self::$nom = $nom;
-        self::$prenom = $prenom;
-        self::$telephone = $telephone;
-        self::$adresse = $adresse;
-        self::$solde_dette = $solde_dette;
-        self::$limite_credit = $limite_credit;
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
+        $this->telephone = $telephone;
+        $this->adresse = $adresse;
+        $this->solde_dette = $solde_dette;
+        $this->limite_credit = $limite_credit;
     }
 
     // Getters

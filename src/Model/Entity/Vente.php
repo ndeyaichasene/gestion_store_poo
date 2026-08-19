@@ -6,18 +6,18 @@ require_once __DIR__ . "/Utilisateur.php";
 class Vente
 {
     // Attributs
-    private static int $id;
-    private static string $reference;
-    private static float $montant_total;
-    private static float $montant_verse;
-    private static string $statut;
-    private static DateTime $date_creation;
+    private  int $id;
+    private  string $reference;
+    private  float $montant_total;
+    private  float $montant_verse;
+    private  string $statut;
+    private  DateTime $date_creation;
 
-    private static ?Client $client;
-    private static ?Utilisateur $utilisateur;
+    private  ?Client $client;
+    // private  ?Utilisateur $utilisateur;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         string $reference = "",
         float $montant_total = 0.0,
@@ -27,14 +27,13 @@ class Vente
         ?Client $client = null,
         ?Utilisateur $utilisateur = null
     ) {
-        self::$id = $id;
-        self::$reference = $reference;
-        self::$montant_total = $montant_total;
-        self::$montant_verse = $montant_verse;
-        self::$date_creation = $date_creation ?? new DateTime();
-        self::$client = $client;
-        self::$utilisateur = $utilisateur;
-        self::$statut = !empty($statut) ? $statut : self::determinerStatut();
+        $this->id = $id;
+        $this->reference = $reference;
+        $this->montant_total = $montant_total;
+        $this->montant_verse = $montant_verse;
+        $this->date_creation = $date_creation ?? new DateTime();
+        $this->client = $client;
+        $this->statut = !empty($statut) ? $statut : $this->determinerStatut();
     }
 
     // Getters
@@ -73,10 +72,7 @@ class Vente
         return $this->client;
     }
 
-    public  function getUtilisateur(): ?Utilisateur
-    {
-        return $this->utilisateur;
-    }
+   
 
     // Setters
     public  function setId(int $id): void
@@ -114,10 +110,7 @@ class Vente
         $this->client = $client;
     }
 
-    public  function setUtilisateur(?Utilisateur $utilisateur): void
-    {
-        $this->utilisateur = $utilisateur;
-    }
+  
 
     // Méthodes métiers
     public  function getMontantRestant(): float

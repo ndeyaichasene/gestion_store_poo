@@ -3,14 +3,14 @@
 class Role
 {
     // Attributs
-    private static int $id;
-    private static string $nom;
+    private  int $id;
+    private  string $nom;
 
     // Constructeur
-    private function __construct(int $id = 0, string $nom = "")
+    public function __construct(int $id = 0, string $nom = "")
     {
-        self::$id = $id;
-        self::$nom = $nom;
+       $this->id = $id;
+       $this->nom = $nom;
     }
 
     // Getters

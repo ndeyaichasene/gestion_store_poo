@@ -5,18 +5,18 @@ require_once __DIR__ . "/Fournisseur.php";
 class Produit
 {
     // Attributs
-    private static int $id;
-    private static string $code;
-    private static string $libelle;
-    private static string $categorie;
-    private static float $prix_achat;
-    private static float $prix_vente;
-    private static int $qte_stock;
-    private static int $seuil_alerte;
-    private static ?Fournisseur $fournisseur;
+    private  int $id;
+    private  string $code;
+    private  string $libelle;
+    private  string $categorie;
+    private  float $prix_achat;
+    private  float $prix_vente;
+    private  int $qte_stock;
+    private  int $seuil_alerte;
+    private  ?Fournisseur $fournisseur;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         string $code = "",
         string $libelle = "",
@@ -27,15 +27,15 @@ class Produit
         int $seuil_alerte = 10,
         ?Fournisseur $fournisseur = null
     ) {
-        self::$id = $id;
-        self::$code = $code;
-        self::$libelle = $libelle;
-        self::$categorie = $categorie;
-        self::$prix_achat = $prix_achat;
-        self::$prix_vente = $prix_vente;
-        self::$qte_stock = $qte_stock;
-        self::$seuil_alerte = $seuil_alerte;
-        self::$fournisseur = $fournisseur;
+       $this->id = $id;
+       $this->code = $code;
+       $this->libelle = $libelle;
+       $this->categorie = $categorie;
+       $this->prix_achat = $prix_achat;
+       $this->prix_vente = $prix_vente;
+       $this->qte_stock = $qte_stock;
+       $this->seuil_alerte = $seuil_alerte;
+       $this->fournisseur = $fournisseur;
     }
 
     // Getters

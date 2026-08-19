@@ -5,18 +5,18 @@ require_once dirname(__DIR__) . "/Model/Entity/Client.php";
 
 class ClientRepository
 {
-    private PDO $pdo;
+    private static PDO $pdo;
 
-    public function __construct(?PDO $pdo = null)
+    private  function __construct(?PDO $pdo = null)
     {
-        $this->pdo = $pdo ?? Database::connexionDB();
+        self::$pdo = $pdo ?? Database::connexionDB();
     }
 
   
-    public function getAllClient(): array
+    private static function getAllClient(): array
     {
         $sql = "SELECT * FROM clients ORDER BY nom ASC, prenom ASC";
-        $results = Database::executeQuery($this->pdo, $sql, [], false);
+        $results = Database::executeQuery(self::$pdo, $sql, [], false);
         $clients = [];
 
         if (empty($results)) {
@@ -24,34 +24,34 @@ class ClientRepository
         }
 
         foreach ($results as $client) {
-            $clients[] = $this->transformerEnObjetClient($client);
+            $clients[] = self::transformerEnObjetClient($client);
         }
         return $clients;
     }
 
   
-    public function getClientById(int $id): ?Client
+    public static function getClientById(int $id): ?Client
     {
         $sql = "SELECT * FROM clients WHERE id = :id";
-        $client = Database::executeQuery($this->pdo, $sql, [':id' => $id]);
+        $client = Database::executeQuery(self::$pdo, $sql, [':id' => $id]);
 
-        return $client ? $this->transformerEnObjetClient($client) : null;
+        return $client ? self::transformerEnObjetClient($client) : null;
     }
 
   
-    public function getClientByTelephone(string $telephone): ?Client
+    public static function getClientByTelephone(string $telephone): ?Client
     {
         $sql = "SELECT * FROM clients WHERE telephone = :telephone";
-        $client = Database::executeQuery($this->pdo, $sql, [':telephone' => $telephone]);
+        $client = Database::executeQuery(self::$pdo, $sql, [':telephone' => $telephone]);
 
-        return $client ? $this->transformerEnObjetClient($client) : null;
+        return $client ? self::transformerEnObjetClient($client) : null;
     }
 
   
-    public function getClientsAvecDettes(): array
+    public static function getClientsAvecDettes(): array
     {
         $sql = "SELECT * FROM clients WHERE solde_dette > 0 ORDER BY solde_dette DESC";
-        $results = Database::executeQuery($this->pdo, $sql, [], false);
+        $results = Database::executeQuery(self::$pdo, $sql, [], false);
         $clients = [];
 
         if (empty($results)) {
@@ -59,13 +59,13 @@ class ClientRepository
         }
 
         foreach ($results as $client) {
-            $clients[] = $this->transformerEnObjetClient($client);
+            $clients[] = self::transformerEnObjetClient($client);
         }
         return $clients;
     }
 
    
-    public function searchClients(string $terme): array
+    public static function searchClients(string $terme): array
     {
         $sql = "SELECT * FROM clients 
                 WHERE LOWER(nom) LIKE :terme 
@@ -73,7 +73,7 @@ class ClientRepository
                    OR telephone LIKE :terme 
                 ORDER BY nom ASC";
 
-        $results = Database::executeQuery($this->pdo, $sql, [':terme' => '%' . strtolower($terme) . '%'], false);
+        $results = Database::executeQuery(self::$pdo, $sql, [':terme' => '%' . strtolower($terme) . '%'], false);
         $clients = [];
 
         if (empty($results)) {
@@ -81,13 +81,13 @@ class ClientRepository
         }
 
         foreach ($results as $client) {
-            $clients[] = $this->transformerEnObjetClient($client);
+            $clients[] = self::transformerEnObjetClient($client);
         }
         return $clients;
     }
 
     
-    public function saveClient(Client $client): int
+    public static function saveClient(Client $client): int
     {
         $sql = "INSERT INTO clients (nom, prenom, adresse, telephone, solde_dette, limite_credit) 
                 VALUES (:nom, :prenom, :adresse, :telephone, :solde_dette, :limite_credit)";
@@ -101,14 +101,14 @@ class ClientRepository
             ':limite_credit' => $client->getLimiteCredit()
         ];
 
-        Database::executeUpdate($this->pdo, $sql, $params);
-        $clientId = (int) $this->pdo->lastInsertId();
+        Database::executeUpdate(self::$pdo, $sql, $params);
+        $clientId = (int) self::$pdo->lastInsertId();
         $client->setId($clientId);
         return $clientId;
     }
 
     
-    public function updateClient(Client $client): bool
+    public static function updateClient(Client $client): bool
     {
         $sql = "UPDATE clients 
                 SET nom = :nom, 
@@ -129,15 +129,15 @@ class ClientRepository
             ':limite_credit' => $client->getLimiteCredit()
         ];
 
-        $nbrLigneAffecte = Database::executeUpdate($this->pdo, $sql, $params);
+        $nbrLigneAffecte = Database::executeUpdate(self::$pdo, $sql, $params);
         return $nbrLigneAffecte > 0;
     }
 
    
-    public function updateSoldeDetteClient(int $id, float $nouveauSolde): bool
+    public static function updateSoldeDetteClient(int $id, float $nouveauSolde): bool
     {
         $sql = "UPDATE clients SET solde_dette = :solde_dette WHERE id = :id";
-        $nbrLignesModifiee = Database::executeUpdate($this->pdo, $sql, [
+        $nbrLignesModifiee = Database::executeUpdate(self::$pdo, $sql, [
             ':id'          => $id,
             ':solde_dette' => max(0.0, $nouveauSolde)
         ]);
@@ -145,15 +145,15 @@ class ClientRepository
     }
 
     
-    public function deleteClient(int $id): bool
+    public static function deleteClient(int $id): bool
     {
         $sql = "DELETE FROM clients WHERE id = :id";
-        $nbrLignesSupprimee = Database::executeUpdate($this->pdo, $sql, [':id' => $id]);
+        $nbrLignesSupprimee = Database::executeUpdate(self::$pdo, $sql, [':id' => $id]);
         return $nbrLignesSupprimee > 0;
     }
 
    
-    public function transformerEnObjetClient(array $client): Client
+    public static  function transformerEnObjetClient(array $client): Client
     {
         return new Client(
             (int)($client['id'] ?? 0),

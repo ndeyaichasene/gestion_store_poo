@@ -6,14 +6,14 @@ require_once __DIR__ . "/Vente.php";
 class Dette
 {
     // Attributs
-    private static int $id;
-    private static float $montant_initial;
-    private static float $montant_paye;
-    private static float $montant_restant;
-    private static string $statut;
-    private static DateTime $date_creation;
-    private static ?Vente $vente;
-    private static ?Client $client;
+    private  int $id;
+    private  float $montant_initial;
+    private  float $montant_paye;
+    private  float $montant_restant;
+    private  string $statut;
+    private  DateTime $date_creation;
+    private  ?Vente $vente;
+    private  ?Client $client;
 
     // Constructeur
     public function __construct(
@@ -26,16 +26,16 @@ class Dette
         ?Vente $vente = null,
         ?Client $client = null
     ) {
-        self::$id = $id;
-        self::$montant_initial = $montant_initial;
-        self::$montant_paye = $montant_paye;
-        self::$montant_restant = ($montant_restant > 0.0 || $montant_initial === 0.0)
+        $this->id = $id;
+        $this->montant_initial = $montant_initial;
+        $this->montant_paye = $montant_paye;
+        $this->montant_restant = ($montant_restant > 0.0 || $montant_initial === 0.0)
             ? $montant_restant
             : max(0.0, $montant_initial - $montant_paye);
-        self::$statut = !empty($statut) ? $statut : (self::$montant_restant <= 0 ? 'SOLDEE' : 'EN_COURS');
-        self::$date_creation = $date_creation ?? new DateTime();
-        self::$vente = $vente;
-        self::$client = $client;
+        $this->statut = !empty($statut) ? $statut : ($this->montant_restant <= 0 ? 'SOLDEE' : 'EN_COURS');
+        $this->date_creation = $date_creation ?? new DateTime();
+        $this->vente = $vente;
+        $this->client = $client;
     }
 
     // Getters

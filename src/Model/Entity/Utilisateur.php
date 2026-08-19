@@ -5,17 +5,17 @@ require_once __DIR__ . "/Role.php";
 class Utilisateur
 {
     // Attributs
-    private static int $id;
-    private static string $nom;
-    private static string $prenom;
-    private static string $email;
-    private static string $password;
-    private static string $adresse;
-    private static string $telephone;
-    private static ?Role $role;
+    private  int $id;
+    private  string $nom;
+    private  string $prenom;
+    private  string $email;
+    private  string $password;
+    private  string $adresse;
+    private  string $telephone;
+    private  ?Role $role;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         string $nom = "",
         string $prenom = "",
         string $email = "",

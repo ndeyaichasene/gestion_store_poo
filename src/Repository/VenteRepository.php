@@ -9,15 +9,23 @@ require_once dirname(__DIR__) . "/Model/Entity/Produit.php";
 
 class VenteRepository
 {
-    private PDO $pdo;
+    private static ?PDO $pdo = null;
 
-    public function __construct(?PDO $pdo = null)
+    private function __construct(?PDO $pdo = null)
     {
-        $this->pdo = $pdo ?? Database::connexionDB();
+        self::$pdo = $pdo ?? Database::connexionDB();
     }
 
-  
-    public function getAllVente(): array
+    private static function getPDO(): PDO
+    {
+        if (self::$pdo === null) {
+            self::$pdo = Database::connexionDB();
+        }
+
+        return self::$pdo;
+    }
+
+    public static function getAllVente(): array
     {
         $sql = "SELECT v.*, 
                        c.nom AS client_nom, c.prenom AS client_prenom, c.telephone AS client_telephone, 
@@ -28,7 +36,13 @@ class VenteRepository
                 INNER JOIN utilisateurs u ON v.utilisateur_id = u.id
                 ORDER BY v.id DESC";
 
-        $results = Database::executeQuery($this->pdo, $sql, [], false);
+        $results = Database::executeQuery(
+            self::getPDO(),
+            $sql,
+            [],
+            false
+        );
+
         $ventes = [];
 
         if (empty($results)) {
@@ -36,7 +50,7 @@ class VenteRepository
         }
 
         foreach ($results as $data) {
-            $ventes[] = $this->transformerEnObjetVente($data);
+            $ventes[] = self::transformerEnObjetVente($data);
         }
 
         return $ventes;
@@ -54,13 +68,14 @@ class VenteRepository
                 INNER JOIN utilisateurs u ON v.utilisateur_id = u.id
                 WHERE v.id = :id";
 
-        $vente = Database::executeQuery($this->pdo, $sql, [':id' => $id]);
+        $vente = Database::executeQuery( Database::getInstanceDB(),
+        $sql, [':id' => $id]);
 
-        return $vente ? $this->transformerEnObjetVente($vente) : null;
+        return $vente ? VenteRepository::transformerEnObjetVente($vente) : null;
     }
 
   
-    public function getLignesVente(int $venteId): array
+    public static function getLignesVente(int $venteId): array
     {
         $sql = "SELECT lv.*, p.code AS produit_code, p.libelle AS produit_libelle, p.prix_vente AS produit_prix_vente
                 FROM lignes_vente lv
@@ -68,7 +83,8 @@ class VenteRepository
                 WHERE lv.vente_id = :vente_id
                 ORDER BY lv.id ASC";
 
-        $results = Database::executeQuery($this->pdo, $sql, [':vente_id' => $venteId], false);
+        $results = Database::executeQuery( Database::getInstanceDB(),
+        $sql, [':vente_id' => $venteId], false);
         $lignes = [];
 
         if (empty($results)) {
@@ -103,7 +119,8 @@ class VenteRepository
                     COUNT(*) AS total_commandes
                 FROM ventes";
 
-        $res = Database::executeQuery($this->pdo, $sql);
+        $res = Database::executeQuery( Database::getInstanceDB(),
+        $sql);
 
         return [
             'ca_encaisse_net'     => (float) ($res['ca_encaisse_net'] ?? 0),
@@ -114,7 +131,7 @@ class VenteRepository
 
     public function getPosStats(): array
     {
-        return $this->getStats();
+        return VenteRepository::getStats();
     }
 
    

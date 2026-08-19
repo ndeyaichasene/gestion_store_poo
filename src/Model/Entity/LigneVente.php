@@ -6,25 +6,25 @@ require_once __DIR__ . "/Vente.php";
 class LigneVente
 {
     // Attributs
-    private static int $id;
-    private static int $quantite;
-    private static float $prix_unitaire;
-    private static ?Vente $vente;
-    private static ?Produit $produit;
+    private  int $id;
+    private  int $quantite;
+    private  float $prix_unitaire;
+    private  ?Vente $vente;
+    private  ?Produit $produit;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         int $quantite = 0,
         float $prix_unitaire = 0.0,
         ?Vente $vente = null,
         ?Produit $produit = null
     ) {
-        self::$id = $id;
-        self::$quantite = $quantite;
-        self::$prix_unitaire = $prix_unitaire;
-        self::$vente = $vente;
-        self::$produit = $produit;
+        $this->id = $id;
+        $this->quantite = $quantite;
+        $this->prix_unitaire = $prix_unitaire;
+        $this->vente = $vente;
+        $this->produit = $produit;
     }
 
     // Getters

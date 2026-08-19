@@ -3,20 +3,20 @@
 class Fournisseur
 {
     // Attributs
-    private static int $id;
-    private static string $nom;
-    private static string $telephone;
-    private static string $email;
-    private static string $adresse;
+    private  int $id;
+    private  string $nom;
+    private  string $telephone;
+    private  string $email;
+    private  string $adresse;
 
     // Constructeur
     private function __construct( int $id = 0, string $nom = "", string $telephone = "", string $email = "", string $adresse = "")
      {
-        Fournisseur::$id = $id;
-        Fournisseur::$nom = $nom;
-        Fournisseur::$telephone = $telephone;
-        Fournisseur::$email = $email;
-        Fournisseur::$adresse = $adresse;
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->telephone = $telephone;
+        $this->email = $email;
+        $this->adresse = $adresse;
     }
 
     // Getters

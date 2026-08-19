@@ -6,16 +6,16 @@ require_once __DIR__ . "/Produit.php";
 class LigneApprovisionnement
 {
     // Attributs
-    private static int $id;
-    private static int $quantite_appro;
-    private static int $quantite_recue;
-    private static float $prix_achat;
-    private static float $sous_total;
-    private static ?Approvisionnement $approvisionnement;
-    private static ?Produit $produit;
+    private  int $id;
+    private  int $quantite_appro;
+    private  int $quantite_recue;
+    private  float $prix_achat;
+    private  float $sous_total;
+    private  ?Approvisionnement $approvisionnement;
+    private  ?Produit $produit;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         int $quantite_appro = 0,
         int $quantite_recue = 0,
@@ -24,13 +24,13 @@ class LigneApprovisionnement
         ?Approvisionnement $approvisionnement = null,
         ?Produit $produit = null
     ) {
-        self::$id = $id;
-        self::$quantite_appro = $quantite_appro;
-        self::$quantite_recue = $quantite_recue;
-        self::$prix_achat = $prix_achat;
-        self::$sous_total = ($sous_total > 0.0) ? $sous_total : ($quantite_appro * $prix_achat);
-        self::$approvisionnement = $approvisionnement;
-        self::$produit = $produit;
+        $this->id = $id;
+        $this->quantite_appro = $quantite_appro;
+        $this->quantite_recue = $quantite_recue;
+        $this->prix_achat = $prix_achat;
+        $this->sous_total = ($sous_total > 0.0) ? $sous_total : ($quantite_appro * $prix_achat);
+        $this->approvisionnement = $approvisionnement;
+        $this->produit = $produit;
     }
 
     // Getters

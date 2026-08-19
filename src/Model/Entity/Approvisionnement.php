@@ -6,18 +6,18 @@ require_once __DIR__ . "/Utilisateur.php";
 class Approvisionnement
 {
     // Attributs
-    private static int $id;
-    private static string $reference_bl;
-    private static float $montant_total;
-    private static string $statut;
-    private static DateTime $date_appro;
-    private static ?DateTime $date_reception;
+    private  int $id;
+    private  string $reference_bl;
+    private  float $montant_total;
+    private  string $statut;
+    private  DateTime $date_appro;
+    private  ?DateTime $date_reception;
 
-    private static ?Fournisseur $fournisseur;
-    private static ?Utilisateur $utilisateur;
+    private  ?Fournisseur $fournisseur;
+    private  ?Utilisateur $utilisateur;
 
     // Constructeur
-    private function __construct(
+    public function __construct(
         int $id = 0,
         string $reference_bl = "",
         float $montant_total = 0.0,
@@ -27,14 +27,14 @@ class Approvisionnement
         ?Fournisseur $fournisseur = null,
         ?Utilisateur $utilisateur = null
     ) {
-        self::$id = $id;
-        self::$reference_bl = $reference_bl;
-        self::$montant_total = $montant_total;
-        self::$statut = !empty($statut) ? $statut : "EN_ATTENTE";
-        self::$date_appro = $date_appro ?? new DateTime();
-        self::$date_reception = $date_reception;
-        self::$fournisseur = $fournisseur;
-        self::$utilisateur = $utilisateur;
+        $this->id = $id;
+        $this->reference_bl = $reference_bl;
+        $this->montant_total = $montant_total;
+        $this->statut = !empty($statut) ? $statut : "EN_ATTENTE";
+        $this->date_appro = $date_appro ?? new DateTime();
+        $this->date_reception = $date_reception;
+        $this->fournisseur = $fournisseur;
+        $this->utilisateur = $utilisateur;
     }
 
     // Getters

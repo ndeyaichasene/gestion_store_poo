@@ -12,7 +12,7 @@ foreach ($panier as $item) {
 $activePage = 'pos';
 $pageTitle = 'STORE-MANAGER POS - Caisse Tactile | StoreManager Pro';
 
-require_once dirname(__DIR__) . "/layout/header.php";
+require_once dirname(__DIR__) . "/views/layout/header.php";
 ?>
 
 <!-- ================= VIEW: POS (SALES CONSOLE) ================= -->

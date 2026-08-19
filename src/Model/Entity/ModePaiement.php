@@ -9,8 +9,8 @@ class ModePaiement
     // Constructeur
     public function __construct(int $id = 0, string $nom = "")
     {
-        ModePaiement::$id = $id;
-        ModePaiement::$nom = $nom;
+       $this->id = $id;
+       $this->nom = $nom;
     }
 
     // Getters
